@@ -39,8 +39,34 @@ app.get("/", (req, res) => {
 });
 
 // endpoint GET (L)
+app.get("/productos", async (request, response) => {
+    try {
+        // Ahora sí podés usar await acá adentro perfectamente
+        const [rows, fields] = await connection.query("SELECT * FROM productos");
+        
+        response.status(200).json({
+            payload: rows // payload son los datos
+        });
+    } catch (error) {
+        console.error("Error al consultar la base de datos:", error);
+        response.status(500).json({ error: "Error interno del servidor" });
+    }
+});
 
 // endpoint GET BY ID (L)
+app.get("/productos/:id", async(request, response) => {
+    try{
+        const id = request.params.id //Obtengo el valor que paso por la URL
+        const [rows] = await connection.query("SELECT * FROM productos WHERE productos.id = ?", [id])
+        console.log(rows)
+
+        response.status(200).json({
+            payload: rows
+        })
+    }catch(error){
+        console.error("Error al consultar la base de datos:", error);
+    }
+})
 
 // endpoint POST (F)
 
