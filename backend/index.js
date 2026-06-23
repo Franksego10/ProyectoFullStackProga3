@@ -49,6 +49,42 @@ const validateId = (req, res, next) => {
     req.id = id;
     next(); // Seguimos con el siguiente middleware si existe o vamos a procesar la response
 }
+
+// Middleware de ruta para validar los campos de un formulario POST
+const categoriasValidas = ["",""] // aca ponemos las 2 categorias de lo que venderemos
+const validateProduct = (req, res, next) => {
+    // Capturamos los datos del req.body que vienen del formulario
+    const { nombre, descripcion, precio, stock, categoria } = req.body;
+
+    // Array vacio de errores
+    const errores = [];
+
+    if(!nombre || !descripcion || !categoria || !precio || !stock){
+        errores.push("Datos invalidos, asegurate que todos los campos esten llenos")
+    }
+
+    if(typeof nombre !== "string" || name.trim().length < 2){
+        errores.push("El nombre debe tener al menos 2 caracteres");
+    }
+
+    if (typeof precio !== "number" || precio <= 0){
+        errores.push("El precio debe ser un numero mayor a 0");
+    }
+
+    if (!categoriasValidas.includes(categoria)){
+        errores.push("Categoria Invalida");
+    }
+
+    // Detectamos si exisste algun error en la lista y lo devolvemos en un 400
+    if (errores.length > 0){
+        return res.status(400).json({
+            message: "Datos Invalidos: " + errores
+        });
+    }
+    
+    next();
+}
+
 //---------------------------------------------------------------------------------------------------------------------
 
 /////////////////////
@@ -111,34 +147,70 @@ app.get("/productos/:id", validateId, async(req, res) => {
 })
 
 // endpoint POST (F)
-app.post("/productos", async (req, res) => {
-    // 1. Capturamos los datos que vienen del formulario (request.body), gracias al middleware app.use(express.json()), que convierte el JSON a Objeto
-    const { nombre, descripcion, categoria, imagen, precio, stock} = req.body; // destructuring
+app.post("/productos", validateProduct, async (req, res) => {
+    try{
+        // 1. Capturamos los datos que vienen del formulario (request.body), gracias al middleware app.use(express.json()), que convierte el JSON a Objeto
+        // ademas vienen limpios gracias al middleware validate Product
+        const { nombre, descripcion, categoria, imagen, precio, stock} = req.body; // destructuring
 
-    // 2. Insertamos en la base de datos usando placeholders (?) por seguridad
-    const sql = "INSERT INTO productos (nombre, descripcion, categoria, pathImagen, precio, stock) VALUES (?, ?, ?, ?, ?, ?)"
-    await connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock]);
-
-    // 3. Respuesta de exito (201 Created)
-    req.status(201).json({
-        message: "Producto creado con exito."
-    });
+        // 2. Insertamos en la base de datos usando placeholders (?) por seguridad
+        const sql = "INSERT INTO productos (nombre, descripcion, categoria, pathImagen, precio, stock) VALUES (?, ?, ?, ?, ?, ?)"
+        // Devolvemos la respuesta en rows para devolver info util ccomo el id del producto
+        const [rows] = await connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock]);       
+    
+        // 3. Respuesta de exito (201 Created)
+        req.status(201).json({
+            message: "Producto creado con exito.",
+            productId: rows.insertId
+        });
+    }
+    catch(error){
+        console.log(error);
+        // Devolvemos un codigo 500 Internal sv error
+        res.status(500).json({
+            message: "Error interno del servidor"
+        });
+    }
 })
 
 // endpoint PUT (F) (Update/modify product)
 
 app.put("/productos", async (req, res) => {
-    // 1. Capturamos los datos que vienen del formulario (request.body) destructurandolos
-    const {id, nombre, descripcion, categoria, imagen, precio, stock} = req.body;
-    
-    // 2. Actualizamos en la base de datos usando placeholders (?) por seguridad
-    const sql = "UPDATE productos SET nombre = ?, descripcion = ?, categoria = ?, imagen = ?, precio = ?, stock = ?, WHERE id = ?";
-    await connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock, id]);
+    try{
+        // 1. Capturamos los datos que vienen del formulario (request.body) destructurandolos
+        const {id, nombre, descripcion, categoria, imagen, precio, stock} = req.body;
 
-    // 3. Respuesta de exito
-    return res.status(200).json({
-        message: "Producto actualizado correctamente."
-    })
+        // Validamos que vengan los campos requeridos antes de tocar la BBDD
+        if(!nombre || !descripcion || !categoria || !imagen || !precio || !stock){
+            return res.status(400).json({
+                message: "Se requiere que todos los campos esten llenos"
+            })
+        }
+        
+        // 2. Actualizamos en la base de datos usando placeholders (?) por seguridad
+        const sql = "UPDATE productos SET nombre = ?, descripcion = ?, categoria = ?, imagen = ?, precio = ?, stock = ?, WHERE id = ?";
+        // Guardamos el resultado de la conexion de la BD
+        const [result] = await connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock, id]);
+        //Verificamos si se actualizo guardando la respuesta de la base de datos
+        // si hubo filas afectadas
+        if (result.affectedRows === 0){
+            return res.status(404).json({
+                message: "No se actualizo ningun campo"
+            });
+        }
+
+        // 3. Respuesta de exito
+        return res.status(200).json({
+            message: "Producto actualizado correctamente."
+        });
+    }
+    catch(error){
+        console.log(error);
+        // Devolvemos un codigo 500 Internal sv error
+        res.status(500).json({
+            message: "Error interno del servidor"
+        });
+    }
 })
 
 // endpoint DELETE (F) 
