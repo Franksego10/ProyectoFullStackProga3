@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librería Dominico</title>
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets/img/pumpernic-cuadrado.png" alt="Logo Librería Dominico">
+            </a>
+        </div>
+        <ul>
+            <li><a href="index.html">VER</a></li>
+            <li><a href="get.html">CONSULTAR</a></li>
+            <li><a href="post.html">CREAR</a></li>
+            <li><a href="put.html">MODIFICAR</a></li>
+            <li><a href="delete.html">ELIMINAR</a></li>
+        </ul>
+    </header>
+
+    <div class="titulo-pagina">
+        <h1>Librería Dominico</h1>
+        <p>📚 Libros y Cómics para todos 💥</p>
+    </div>
+
+    <main>
+        <h2>Nuestros productos</h2>
+        <div id="contenedor-productos">
+            <p>Cargando productos...</p>
+        </div>
+    </main>
+
+    <script>
+        const contenedorProductos = document.getElementById("contenedor-productos");
+
+        const url = "http://localhost:3002/productos";
+
+        async function obtenerProductos() {
+            try {
+                const response = await fetch(url)
+                console.log(response);
+
+                if(!response.ok){
+                    const parsedResponse = await response.json()
+                    throw new error(`${parsedResponse.mensaje}`)
+                    
+                }
+
+                const { payload } = await response.json()
+                renderizarProductos(payload)
+
+            } catch (error) {
+                console.log(error)
+                mostrarError(error)
+            }
+            
+        }
+
+        function renderizarProductos(array) {
+            let htmlProductos = "";
+
+            array.forEach(producto => {
+                htmlProductos += `
+                    <div class="card-producto">
+                        <img src="${producto.pathImagen}" alt="${producto.nombre}">
+                        <h4>${producto.nombre}</h4>
+                        <p>Id: ${producto.id}</p>
+                        <p>$${producto.precio}</p>
+                    </div>
+                `;
+            });
+
+            contenedorProductos.innerHTML = htmlProductos;
+        }
+
+        
+        function mostrarError(mensaje) {
+            contenedorProductos.innerHTML = `
+                <p class="mensaje mensaje-error">${mensaje}</p>
+            `;
+        }
+
+        obtenerProductos();
+    </script>
+</body>
+</html>
