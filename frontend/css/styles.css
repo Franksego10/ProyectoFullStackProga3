@@ -1,0 +1,225 @@
+/* === RESET === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul {
+    list-style: none;
+}
+
+/* === GENERAL === */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F4F4F8;
+    color: #1A1F4B;
+}
+
+/* === HEADER === */
+header {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background-color: #1A1F4B;
+    border-bottom: 4px solid #FFD60A;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+header ul {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header ul li a {
+    font-family: 'Bangers', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    color: white;
+    text-decoration: none;
+    background-color: #E63946;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 2px solid #FFD60A;
+}
+
+/* === BANDA TITULO (debajo del header) === */
+.titulo-pagina {
+    background-color: #E63946;
+    text-align: center;
+    padding: 30px;
+    border-bottom: 4px solid #1A1F4B;
+}
+
+.titulo-pagina h1 {
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
+    color: #FFD60A;
+    letter-spacing: 3px;
+}
+
+.titulo-pagina p {
+    color: white;
+    margin-top: 5px;
+    font-size: 1rem;
+}
+
+/* === MAIN Y TITULOS DE SECCIÓN === */
+main {
+    padding: 30px;
+}
+
+main h2 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: #1A1F4B;
+    border-bottom: 3px solid #FFD60A;
+    padding-bottom: 8px;
+}
+
+/* === FORMULARIOS === */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin-bottom: 30px;
+}
+
+form label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1A1F4B;
+}
+
+form input[type="text"],
+form input[type="number"] {
+    padding: 10px;
+    border: 2px solid #1A1F4B;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    background-color: white;
+    color: #1A1F4B;
+}
+
+form input[type="submit"] {
+    font-family: 'Bangers', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    background-color: #E63946;
+    color: white;
+    border: 2px solid #1A1F4B;
+    border-radius: 6px;
+    box-shadow: 3px 3px 0px #1A1F4B;
+    cursor: pointer;
+}
+
+/* ============================================
+   CARDS - Cómo mover las cards a tu gusto:
+
+   → Para cambiar el TAMAÑO de las cards:
+     Modificá el "width" de .card-producto
+     Ejemplo: width: 200px (más grande)
+              width: 140px (más chica)
+
+   → Para cambiar el ESPACIO entre cards:
+     Modificá el "gap" de #contenedor-productos
+     Ejemplo: gap: 30px (más espacio)
+              gap: 10px (menos espacio)
+============================================ */
+
+#contenedor-productos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card-producto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 170px;       /* ← Cambiá esto para ajustar el tamaño */
+    min-height: 170px;
+    padding: 10px;
+    gap: 6px;
+    background-color: white;
+    color: #1A1F4B;
+    border-radius: 8px;
+    border: 3px solid #1A1F4B;
+    box-shadow: 4px 4px 0px #1A1F4B;
+    font-size: 10px;
+    text-align: center;
+}
+
+.card-producto img {
+    width: 100%;
+    aspect-ratio: 2/3;   /* proporción clásica de tapa de cómic/libro */
+    object-fit: cover;
+}
+
+.card-producto h4 {
+    font-family: 'Bangers', cursive;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.card-producto p {
+    margin: 0;
+}
+
+/* === LISTA PRODUCTO (usado en get.html y delete.html) === */
+.lista-producto {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background-color: white;
+    border: 3px solid #1A1F4B;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px #1A1F4B;
+    margin-top: 20px;
+    max-width: 500px;
+}
+
+.lista-producto img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.lista-producto p {
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+.lista-producto input[type="button"] {
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    padding: 8px 16px;
+    background-color: #E63946;
+    color: white;
+    border: 2px solid #1A1F4B;
+    border-radius: 6px;
+    box-shadow: 3px 3px 0px #1A1F4B;
+    cursor: pointer;
+}
