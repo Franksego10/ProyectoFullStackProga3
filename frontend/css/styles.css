@@ -18,11 +18,11 @@ body {
 
 /* === HEADER === */
 header {
-    height: 80px;
+    min-height: 80px; /* La idea de usar min-height es que el "largo" del header pueda incrementar en caso de que los botones hagan un salto de linea */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 10px 20px; /* Por si los botones saltan de linea */
     background-color: #1A1F4B;
     border-bottom: 4px solid #FFD60A;
 }
