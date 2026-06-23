@@ -178,19 +178,19 @@ app.post("/productos", validateProduct, async (req, res) => {
 app.put("/productos", async (req, res) => {
     try{
         // 1. Capturamos los datos que vienen del formulario (request.body) destructurandolos
-        const {id, nombre, descripcion, categoria, imagen, precio, stock} = req.body;
+        const {id, nombre, descripcion, categoria, imagen, precio, stock, active} = req.body;
 
         // Validamos que vengan los campos requeridos antes de tocar la BBDD
-        if(!nombre || !descripcion || !categoria || !imagen || !precio || !stock){
+        if(!nombre || !descripcion || !categoria || !imagen || !precio || !stock || active === undefined){
             return res.status(400).json({
                 message: "Se requiere que todos los campos esten llenos"
             })
         }
         
         // 2. Actualizamos en la base de datos usando placeholders (?) por seguridad
-        const sql = "UPDATE productos SET nombre = ?, descripcion = ?, categoria = ?, imagen = ?, precio = ?, stock = ?, WHERE id = ?";
+        const sql = "UPDATE productos SET nombre = ?, descripcion = ?, categoria = ?, pathImagen = ?, precio = ?, stock = ?, activo = ? WHERE id = ?";
         // Guardamos el resultado de la conexion de la BD
-        const [result] = await connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock, id]);
+        const [result] = await connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock, active, id]);
         //Verificamos si se actualizo guardando la respuesta de la base de datos
         // si hubo filas afectadas
         if (result.affectedRows === 0){
