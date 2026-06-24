@@ -66,15 +66,52 @@
     <script>
         const postProductForm = document.getElementById("postProduct-form");
 
+         //  Validamos previamente los datos en el cliente
+        function validarFormulario(data) {
+            const errores = [];
+
+            // Nombre
+            if (!data.nombre || data.nombre.trim().length < 2) {
+                errores.push("El nombre debe tener al menos 2 caracteres");
+            }
+
+            // Precio
+            if (!data.precio || isNaN(data.precio) || Number(data.precio) < 0) {
+                errores.push("El precio debe ser un numero mayor a 0");
+            }
+            
+            // Stock
+            if (!data.stock || isNaN(data.stock) || Number(data.stock) < 0) {
+                errores.push("El precio debe ser un numero mayor a 0");
+            }
+            
+            // Categoria
+            if (!data.categoria) {
+                errores.push("Debe seleccionarse una categoria");
+            }
+
+            return errores;
+        }
+
         postProductForm.addEventListener("submit", async event => {
             event.preventDefault();
 
             // Obtenemos la data del formulario
             const formData = new FormData(event.target);
+            console.log(formData)
 
             // Parseamos el objeto FormData a un objeto JS normal para enviarlo en el body con JSON.stringify()
             const data = Object.fromEntries(formData.entries());
             console.log(data); // {name: 'Milanesa con pure', image: 'https://external-content.duckduckgo.com/iu/?u=http…6e45b50cd5d36060579357952f993b359785aa40496b7b8cd', category: 'food', price: '400'}
+            
+            data.precio = Number(data.precio);
+            data.stock = Number(data.stock);
+            
+            const errores = validarFormulario(data);
+            if(errores.length > 0){
+                mostrarMensaje("ERROR", errores);
+                return
+            }
 
             try {
                 const response = await fetch("http://localhost:3002/productos/", {
@@ -94,7 +131,11 @@
                 console.error("Error al enviar los datos: ", error);
             }
 
-
+        function mostrarMensaje(tipo, mensaje) {
+            contenedorProductos.innerHTML = `
+                <p class="mensaje mensaje-${tipo}">${mensaje}</p>
+            `;
+        }
         })
     </script>
 
