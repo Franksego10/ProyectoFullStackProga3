@@ -48,9 +48,9 @@
                 console.log(response);
 
                 if(!response.ok){
+                    // traemos el message que nos devuelve el error 404
                     const parsedResponse = await response.json()
-                    throw new error(`${parsedResponse.mensaje}`)
-                    
+                    throw new Error(`${parsedResponse.message}`)
                 }
 
                 const { payload } = await response.json()
