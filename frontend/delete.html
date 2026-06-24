@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Producto</title>
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets\libreriaDominicoIcono.png" alt="Logo Librería Dominico">
+            </a>
+        </div>
+        <ul>
+            <li><a href="index.html">VER</a></li>
+            <li><a href="get.html">CONSULTAR</a></li>
+            <li><a href="post.html">CREAR</a></li>
+            <li><a href="put.html">MODIFICAR</a></li>
+            <li><a href="delete.html">ELIMINAR</a></li>
+        </ul>
+    </header>
+
+    <div class="titulo-pagina">
+        <h1>Eliminar Producto</h1>
+        <p>🗑️ Eliminar productos y sus datos</p>
+    </div>
+
+    <main>
+        <h2>Eliminar un producto por ID</h2>
+
+        <form id="getProduct-form">
+            <label for="idProd">ID del producto</label>
+            <input type="number" name="idProd" id="idProd" required>
+            <input type="submit" value="Consultar producto">  <!-- Boton-->
+        </form>
+
+        <div id="contenedor-productos"></div>
+    </main>
+
+    <script>
+        const contenedorProductos = document.getElementById("contenedor-productos");
+        const getProductForm = document.getElementById("getProduct-form"); // El contenedor donde ingresamos el id
+        const urlBase = "http://localhost:3002/productos";
+
+        getProductForm.addEventListener("submit", async event => {
+            event.preventDefault(); //evitamos el envio por defecto
+
+            // Extraemos el id del producto
+            const idProd = event.target.idProd.value.trim();
+            
+            // Nos aseguremos que el id sea valido
+            if (!idProd) {
+                mostrarError("Ingresá un id válido");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${urlBase}/${idProd}`);
+                console.log(response);
+
+                //parseamos los datos que devuelve el sv
+                const datos = await response.json();
+
+                // Mostramos por pantalla el error 400 o 500 si lo devuelve el sv
+                if(!response.ok){
+                    mostrarError(datos.message);
+                    return;
+                }
+
+                const producto = datos.payload[0];
+                console.log(producto);
+
+                renderizarProducto(producto);
+
+            }
+            catch(error){
+                console.error("Error al obtener el producto");
+
+                // Mostramos errores de red
+                mostrarError("Error de conexion con el servidor");
+            }
+        });
+
+        function renderizarProducto(producto){
+            const htmlProducto = `
+                <ul>
+                    <li class="lista-producto">
+                        <img src="${producto.pathImagen}" alt="${producto.nombre}">
+                        <p>Id: ${producto.id} / Nombre: ${producto.nombre} / <strong>Precio: $${producto.precio}</strong></p>
+                        <input type="button" id="deleteProduct-button" value="Eliminar Producto">
+                    </li>
+                </ul>
+            `;
+            
+            contenedorProductos.innerHTML = htmlProducto;
+
+            const deleteProductButton = document.getElementById("deleteProduct-button");
+
+            deleteProductButton.addEventListener("click", event => {
+                event.stopPropagation();
+                
+                const confirmacion = confirm("¿Seguro que quieres elimnar el producto?");
+
+                if(!confirmacion){
+                    alert("Operacion cancelada")
+                }else{
+                    eliminarProducto(producto.id);
+                }
+            });
+        }
+
+        function mostrarError(mensaje) {
+            contenedorProductos.innerHTML = `
+                <p class="mensaje mensaje-error">${mensaje}</p>
+            `;
+        }
+
+        function mostrarExito(mensaje) {
+            contenedorProductos.innerHTML = `
+                <p class="mensaje mensaje-exito">${mensaje}</p>
+            `;
+        }
+
+
+        // funcion para realizar una operacion delete
+        async function eliminarProducto(id){
+            try{
+                const response = await fetch(`${urlBase}/${id}`, {
+                    method: "DELETE"
+                });
+
+                const result = await response.json();
+
+                // Manejamos error 400 500
+                if (!response.ok) {
+                    mostrarError(result.message);
+                    return;
+                }
+
+                // En lugar de un alert bloqueante, mostramos un mensaje de exito, similar el mensaje de error
+                console.log(result.message);
+
+                // Mensaje de exito;
+                // reemplazamos el producto por el mensaje, asi que no hace falta limpiarlo
+                mostrarExito(result.message);
+                // Limpiamos visualmente el producto que eliminamos de la pantalla
+                // contenedorProductos.innerHTML = "";
+            }
+            catch(error){
+                console.error("Error en la solicitud DELETE: ", error);
+                alert("Ocurrio un error al eliminar un producto")
+            }
+        }
+
+    </script>
+
+    
+</body>
+</html>
