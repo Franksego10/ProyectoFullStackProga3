@@ -51,10 +51,10 @@ const validateId = (req, res, next) => {
 }
 
 // Middleware de ruta para validar los campos de un formulario POST
-const categoriasValidas = ["",""] // aca ponemos las 2 categorias de lo que venderemos
+const categoriasValidas = ["comic","libro"] // aca ponemos las 2 categorias de lo que venderemos
 const validateProduct = (req, res, next) => {
     // Capturamos los datos del req.body que vienen del formulario
-    const { nombre, descripcion, precio, stock, categoria } = req.body;
+    const { nombre, descripcion, precio, stock, categoria} = req.body;
 
     // Array vacio de errores
     const errores = [];
