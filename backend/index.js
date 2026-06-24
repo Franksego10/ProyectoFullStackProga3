@@ -63,7 +63,7 @@ const validateProduct = (req, res, next) => {
         errores.push("Datos invalidos, asegurate que todos los campos esten llenos")
     }
 
-    if(typeof nombre !== "string" || name.trim().length < 2){
+    if(typeof nombre !== "string" || nombre.trim().length < 2){
         errores.push("El nombre debe tener al menos 2 caracteres");
     }
 
@@ -159,7 +159,7 @@ app.post("/productos", validateProduct, async (req, res) => {
         const [rows] = await connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock]);       
     
         // 3. Respuesta de exito (201 Created)
-        req.status(201).json({
+        res.status(201).json({
             message: "Producto creado con exito.",
             productId: rows.insertId
         });
@@ -227,7 +227,7 @@ app.delete("/productos/:id", validateId, async (req, res) => {
     
         // 3. Respuesta de exito
         res.status(200).json({
-            message: `Producto con id ${id} eliminado exitosamente.`
+            message: `Producto con id ${req.id} eliminado exitosamente.`
         })
     }
     catch(error){
