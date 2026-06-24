@@ -67,8 +67,12 @@ const validateProduct = (req, res, next) => {
         errores.push("El nombre debe tener al menos 2 caracteres");
     }
 
-    if (typeof precio !== "number" || precio <= 0){
+    if (typeof precio !== "number" || precio < 0){
         errores.push("El precio debe ser un numero mayor a 0");
+    }
+
+    if (typeof stock !== "number" || stock < 0){
+        errores.push("El stock debe ser un numero mayor a 0");
     }
 
     if (!categoriasValidas.includes(categoria)){
@@ -123,9 +127,10 @@ app.get("/productos", async (req, res) => {
 app.get("/productos/:id", validateId, async(req, res) => {
     try{
 
+        const sql = "SELECT id, nombre, descripcion, categoria, pathImagen, precio, activo, stock FROM productos WHERE productos.id = ?";
        // const id = request.params.id //Obtengo el valor que paso por la URL
        // Ahora el validateId captura el valor del id limpio (el id ahora esta dentro de la request)
-        const [rows] = await connection.query("SELECT id, nombre, descripcion, categoria, pathImagen, precio, activo, stock FROM productos WHERE productos.id = ?", [req.id])
+        const [rows] = await connection.query(sql, [req.id])
         console.log(rows)
 
         // En caso de no haber productos, error 404
