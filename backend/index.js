@@ -6,6 +6,8 @@ import environment from "./src/api/config/environment.js"; // importamos los dat
 import { productRoutes } from "./src/api/routes/index.js";
 import cors from "cors"; // da permiso a las solicitudes / peticiones
 import { loggerURL } from "./src/api/middlewares/middlewares.js";
+// importamos la configuracion para trabajar con rutas de utils
+import {__dirname, join} from "./src/api/utils/index.js";
 
 const app = express();
 
@@ -28,6 +30,7 @@ app.use(express.json());
 
 app.use(loggerURL);
 
+app.use(express.static(join(__dirname, "src/public")))
 //---------------------------------------------------------------------------------------------------------------------
 
 /////////////////////
