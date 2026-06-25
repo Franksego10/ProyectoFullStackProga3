@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 });
 
 // RUTAS
-app.use("/products", productRoutes); // product.routes.js es un middleware
+app.use("/productos", productRoutes); // product.routes.js es un middleware
 
 
 app.listen(PORT, () => {
