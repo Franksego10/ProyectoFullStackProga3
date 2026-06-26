@@ -25,8 +25,34 @@ export const getProductView = (req, res) => {
     res.render("get", {
         title:"Consultar",
         about:"Buscar producto por ID",
-        //productsArray:"",
         tituloAccion:"Consultar producto",
         descripcion:"🔍 Buscá por ID"
+    })
+}
+
+export const createProductView = (req, res) => {
+    res.render("post", {
+        title:"Crear producto",
+        about:"Nuevo producto",
+        tituloAccion:"Crear Producto",
+        descripcion:"➕ Agregá un nuevo producto"
+    })
+}
+
+export const modifyProductView = (req, res) => {
+    res.render("put", {
+        title:"Modificar producto",
+        about:"Modificar producto por ID",
+        tituloAccion:"Modificar producto",
+        descripcion:"✏️ Actualizá los datos de un producto"
+    })
+}
+
+export const deleteProductView = (req, res) => {
+    res.render("delete", {
+        title:"Eliminar producto",
+        about:"Eliminar producto por ID",
+        tituloAccion:"Eliminar producto",
+        descripcion:"🗑️ Eliminar productos y sus datos"
     })
 }
