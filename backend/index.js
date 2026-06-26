@@ -31,6 +31,10 @@ app.use(express.json());
 app.use(loggerURL);
 
 app.use(express.static(join(__dirname, "src/public")))
+
+app.set("view engine", "ejs")
+
+app.set("views", join(__dirname, "src/views"))
 //---------------------------------------------------------------------------------------------------------------------
 
 /////////////////////
