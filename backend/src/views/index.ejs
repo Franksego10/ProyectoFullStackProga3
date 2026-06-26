@@ -1,68 +1,68 @@
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
-
-
-<div class="titulo-pagina">
-    <h1>Librería Dominico</h1>
-    <p>📚 Libros y Cómics para todos 💥</p>
-</div>
-
 <main>
-    <h2>Nuestros productos</h2>
+    <h2> <%= about %> </h2>
     <div id="contenedor-productos">
-        <p>Cargando productos...</p>
+        <% productsArray.forEach((producto) =>  { %>  <!-- Recibimos el array de productos y lo iteramos en la plantilla -->
+            <div class="card-producto"> 
+                <img src="<%= producto.pathImagen%>" alt="<%=producto.nombre%>">
+                <h4> <%= producto.nombre %> </h4>
+                <p>Id:  <%= producto.id %> </p>
+                <p>$ <%= producto.precio %> </p>
+            </div> <!-- Estamos haciendo la accion del innerHTML-->
+        <% }); %> 
     </div>
 </main>
 
 <script>
-    const contenedorProductos = document.getElementById("contenedor-productos");
+    // const contenedorProductos = document.getElementById("contenedor-productos");
     
-    const url = "http://localhost:3002/productos";
+    // const url = "http://localhost:3002/productos";
     
-    async function obtenerProductos() {
-        try {
-                const response = await fetch(url)
-                console.log(response);
+    // async function obtenerProductos() {
+    //     try {
+    //             const response = await fetch(url)
+    //             console.log(response);
                 
-                if(!response.ok){
-                    // traemos el message que nos devuelve el error 404
-                    const parsedResponse = await response.json()
-                    throw new Error(`${parsedResponse.message}`)
-                }
+    //             if(!response.ok){
+    //                 // traemos el message que nos devuelve el error 404
+    //                 const parsedResponse = await response.json()
+    //                 throw new Error(`${parsedResponse.message}`)
+    //             }
                 
-                const { payload } = await response.json()
-                renderizarProductos(payload)
+    //             const { payload } = await response.json()
+    //             renderizarProductos(payload)
                 
-            } catch (error) {
-                console.log(error)
-                mostrarError(error)
-            }
+    //         } catch (error) {
+    //             console.log(error)
+    //             mostrarError(error)
+    //         }
             
-        }
+    //     }
         
-        function renderizarProductos(array) {
-            let htmlProductos = "";
+    //     function renderizarProductos(array) {
+    //         let htmlProductos = "";
             
-            array.forEach(producto => {
-                htmlProductos += `
-                <div class="card-producto">
-                    <img src="${producto.pathImagen}" alt="${producto.nombre}">
-                    <h4>${producto.nombre}</h4>
-                    <p>Id: ${producto.id}</p>
-                    <p>$${producto.precio}</p>
-                    </div>
-                    `;
-                });
+    //         array.forEach(producto => {
+    //             htmlProductos += `
+    //             <div class="card-producto">
+    //                 <img src="${producto.pathImagen}" alt="${producto.nombre}">
+    //                 <h4>${producto.nombre}</h4>
+    //                 <p>Id: ${producto.id}</p>
+    //                 <p>$${producto.precio}</p>
+    //                 </div>
+    //                 `;
+    //             });
                 
-                contenedorProductos.innerHTML = htmlProductos;
-            }
+    //             contenedorProductos.innerHTML = htmlProductos;
+    //         }
             
-            function mostrarError(mensaje) {
-                contenedorProductos.innerHTML = `
-                <p class="mensaje mensaje-error">${mensaje}</p>
-                `;
-            }
+    //         function mostrarError(mensaje) {
+    //             contenedorProductos.innerHTML = `
+    //             <p class="mensaje mensaje-error">${mensaje}</p>
+    //             `;
+    //         }
             
-            obtenerProductos();
-            </script>
+    //         obtenerProductos();
+</script>
 <%- include("partials/footer.ejs") %>
