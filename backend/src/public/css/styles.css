@@ -59,6 +59,11 @@ header ul li a {
     border: 2px solid #FFD60A;
 }
 
+/* Boton de MENU OCULTO */
+#btn-menu {
+    display: none;
+}
+
 /* === BANDA TITULO (debajo del header) === */
 .titulo-pagina {
     background-color: #E63946;
@@ -214,4 +219,45 @@ form input[type="submit"] {
     border-radius: 6px;
     box-shadow: 3px 3px 0px #1A1F4B;
     cursor: pointer;
+}
+
+@media(max-width: 620px){
+    
+    header {
+        flex-wrap: nowrap;
+        position: relative;
+    }
+    
+    header ul {
+        display:none;
+    }
+    
+    header ul.mostrar{
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(26, 31, 75, 0.97);
+    padding: 40px 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    }
+    
+    #btn-menu {
+    display: flex;
+    font-size: 28px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    flex-wrap: wrap;
+    background: transparent;
+    position: relative;
+    z-index: 1001;
+    }
 }
