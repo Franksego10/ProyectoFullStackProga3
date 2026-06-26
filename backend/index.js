@@ -3,7 +3,7 @@
 import express from "express";
 import environment from "./src/api/config/environment.js"; // importamos los datos de la BD
 // import connection from "./src/api/database/db.js"; // importamos pool de conexiones // ya no lo necesitamos porque esta en product.routes.js
-import { productRoutes, viewRoutes} from "./src/api/routes/index.js";
+import { authRoutes, productRoutes, viewRoutes} from "./src/api/routes/index.js";
 import cors from "cors"; // da permiso a las solicitudes / peticiones
 import { loggerURL } from "./src/api/middlewares/middlewares.js";
 // importamos la configuracion para trabajar con rutas de utils
@@ -30,11 +30,11 @@ app.use(express.json());
 
 app.use(loggerURL);
 
-app.use(express.static(join(__dirname, "src/public")))
+app.use(express.static(join(__dirname, "src/public")));
 
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
 
-app.set("views", join(__dirname, "src/views"))
+app.set("views", join(__dirname, "src/views"));
 //---------------------------------------------------------------------------------------------------------------------
 
 /////////////////////
@@ -49,6 +49,10 @@ app.use("/productos", productRoutes); // product.routes.js es un middleware / ru
 
 // RUTAS DE VISTAS
 app.use("/dashboard", viewRoutes);
+
+// RUTA DE LOGIN
+app.use("/login", authRoutes);
+
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);

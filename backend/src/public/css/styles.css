@@ -112,6 +112,8 @@ form label {
 
 form input[type="text"],
 form input[type="number"],
+form input[type="email"],
+form input[type="password"],
 form select {
     padding: 10px;
     border: 2px solid #1A1F4B;
