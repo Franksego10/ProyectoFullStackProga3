@@ -15,7 +15,6 @@ const loggerURL = ((req, res, next) => {
 
 
 // Middleware de ruta (se aplica en algunos endopoints)
-
 const validateId = (req, res, next) => {
     const id = Number(req.params.id); // transformo el id pasado por la url a numero
 
@@ -71,8 +70,21 @@ const validateProduct = (req, res, next) => {
     next();
 }
 
+// Middleware de Proteccion de rutas
+
+const requireLogin = (req, res, next) => {
+    // Si no existe una sesion entonces volvemos a la pantalla del login
+    if(!req.session.user){
+        return res.redirect("/login")
+    }
+    
+    next();
+}
+
+
 export {
     loggerURL,
     validateId,
-    validateProduct
+    validateProduct,
+    requireLogin
 }

@@ -7,7 +7,21 @@
 
 <main>
     <h2> <%= about %></h2>
-    <form id="loginUser-form">
+    <!-- 
+    =================================================================
+        Enviando Formularios con HTML nativo (Evitamos uso de js)
+    =================================================================
+    En action="" Mandamos la url del endpoint /login 
+    En method="" Determinamos si enviamos con GET o con POST la informacion
+    Gracias al Middleware: 
+        app.use(express.urlencoded({
+            extended: true
+            })
+        );
+    Nuestro endpoint recibira esta info (no JSON) como objeto JS, es decir, el middleware parseara automaticamente el tipo de info que envia <form>
+    -->
+    <form action="/login" method="POST" id="loginUser-form">
+        <!-- TO DO: Introducir campos regex para validar los datos que enviamos -->
         <!-- Mail del usuario -->
         <label for="emailUser">Email</label>
         <input type="email" name="email" id="emailUSer" required>
