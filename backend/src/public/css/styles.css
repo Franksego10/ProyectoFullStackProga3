@@ -200,6 +200,7 @@ form input[type="submit"] {
     box-shadow: 4px 4px 0px #1A1F4B;
     margin-top: 20px;
     max-width: 500px;
+    flex-wrap: wrap;  /* Para que no desborde */
 }
 
 .lista-producto img {
