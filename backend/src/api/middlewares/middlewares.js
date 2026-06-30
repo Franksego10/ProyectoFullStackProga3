@@ -39,8 +39,8 @@ const validateProduct = (req, res, next) => {
 
     // Array vacio de errores
     const errores = [];
-
-    if(!nombre || !descripcion || !categoria || !precio || !stock){
+//Comic != comic
+    if(!nombre || !descripcion || !categoria || !precio || stock === undefined){
         errores.push("Datos invalidos, asegurate que todos los campos esten llenos")
     }
 
@@ -56,7 +56,7 @@ const validateProduct = (req, res, next) => {
         errores.push("El stock debe ser un numero mayor a 0");
     }
 
-    if (!categoriasValidas.includes(categoria)){
+    if (!categoriasValidas.includes(categoria.toLowerCase())){
         errores.push("Categoria Invalida");
     }
 
