@@ -112,14 +112,29 @@ export const createProduct = async (req, res) => {
 export const modifyProduct = async (req, res) => {
     try{
         // 1. Capturamos los datos que vienen del formulario (request.body) destructurandolos
-        const {id, nombre, descripcion, categoria, imagen, precio, stock, active} = req.body;
+        let {id, nombre, descripcion, categoria, imagen, precio, stock, active} = req.body;
 
         // Validamos que vengan los campos requeridos antes de tocar la BBDD
-        if(!nombre || !descripcion || !categoria || !imagen || !precio || !stock || active === undefined){
+        if(!nombre || !descripcion || !categoria || !imagen || !precio || active === undefined){
             return res.status(400).json({
                 message: "Se requiere que todos los campos esten llenos"
             })
         }
+
+        //Si stock no es numerico lo seteamos en cero
+        //stock === undefined ? 0 : stock
+        
+        if(stock === undefined || stock == 0){
+            active = 0
+        }
+        if(stock > 0){
+            active = 1;
+        }
+        if(active == 0){
+            stock = 0;
+        }
+
+        //if(active )
         
         const [result] = await ProductModels.updateProduct(nombre, descripcion, categoria, imagen, precio, stock, active, id);
         //Verificamos si se actualizo guardando la respuesta de la base de datos

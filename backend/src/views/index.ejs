@@ -3,67 +3,35 @@
 <main>
     <h2> <%= about %> </h2>
     <div id="contenedor-productos">
-        <% productsArray.forEach((producto) =>  { %>  <!-- Recibimos el array de productos y lo iteramos en la plantilla -->
+        <% activeProductsArray.forEach((producto) =>  { %>  <!-- Recibimos el array de productos y lo iteramos en la plantilla -->
             <div class="card-producto"> 
                 <img src="<%= producto.pathImagen%>" alt="<%=producto.nombre%>">
                 <h4> <%= producto.nombre %> </h4>
                 <p>Id:  <%= producto.id %> </p>
                 <p>$ <%= producto.precio %> </p>
+                <p>Stock: <%= producto.stock%></p>
+                <p>Activo: <%= producto.activo%></p>
             </div> <!-- Estamos haciendo la accion del innerHTML-->
         <% }); %> 
     </div>
-</main>
+    <h2>Productos inactivos (sin stock)</h2>
 
-<!--<script>
-    // const contenedorProductos = document.getElementById("contenedor-productos");
-    
-    // const url = "http://localhost:3002/productos";
-    
-    // async function obtenerProductos() {
-    //     try {
-    //             const response = await fetch(url)
-    //             console.log(response);
-                
-    //             if(!response.ok){
-    //                 // traemos el message que nos devuelve el error 404
-    //                 const parsedResponse = await response.json()
-    //                 throw new Error(`${parsedResponse.message}`)
-    //             }
-                
-    //             const { payload } = await response.json()
-    //             renderizarProductos(payload)
-                
-    //         } catch (error) {
-    //             console.log(error)
-    //             mostrarError(error)
-    //         }
-            
-    //     }
-        
-    //     function renderizarProductos(array) {
-    //         let htmlProductos = "";
-            
-    //         array.forEach(producto => {
-    //             htmlProductos += `
-    //             <div class="card-producto">
-    //                 <img src="${producto.pathImagen}" alt="${producto.nombre}">
-    //                 <h4>${producto.nombre}</h4>
-    //                 <p>Id: ${producto.id}</p>
-    //                 <p>$${producto.precio}</p>
-    //                 </div>
-    //                 `;
-    //             });
-                
-    //             contenedorProductos.innerHTML = htmlProductos;
-    //         }
-            
-    //         function mostrarError(mensaje) {
-    //             contenedorProductos.innerHTML = `
-    //             <p class="mensaje mensaje-error">${mensaje}</p>
-    //             `;
-    //         }
-            
-    //         obtenerProductos();
-</script>*/-->
+    <div id="contenedor-productos-inactivos">
+        <% if(nonActiveProductsArray.length === 0)  { %>
+            <p>Actualmente no hay productos inactivos</p>
+        <% } %>
+
+        <% nonActiveProductsArray.forEach((producto) =>  { %>  <!-- Recibimos el array de productos y lo iteramos en la plantilla -->
+            <div class="card-producto"> 
+                <img src="<%= producto.pathImagen%>" alt="<%=producto.nombre%>">
+                <h4> <%= producto.nombre %> </h4>
+                <p>Id:  <%= producto.id %> </p>
+                <p>$ <%= producto.precio %> </p>
+                <p>Stock: <%= producto.stock%></p>
+            </div> <!-- Estamos haciendo la accion del innerHTML-->
+        <% }); %> 
+    </div>
+
+</main>
 <script src="/js/header.js"></script>
 <%- include("partials/footer.ejs") %>

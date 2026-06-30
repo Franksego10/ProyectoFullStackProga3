@@ -23,7 +23,7 @@ router.get("/:id", validateId, getProductById);
 router.post("/", validateProduct, createProduct);
 
 // endpoint PUT (F) (Update/modify product)
-router.put("/", modifyProduct);
+router.put("/", validateProduct , modifyProduct);
 
 // endpoint DELETE (F) 
 router.delete("/:id", validateId, removeProduct);

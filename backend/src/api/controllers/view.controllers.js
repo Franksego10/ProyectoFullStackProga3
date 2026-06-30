@@ -10,7 +10,8 @@ export const indexView = async (req, res) => {
         res.render("index", {
             title:"dashboard",
             about:"nuestros-productos",
-            productsArray:rows,
+            activeProductsArray:rows.filter((producto) => producto.activo == 1),
+            nonActiveProductsArray:rows.filter((producto) => producto.activo == 0),
             tituloAccion:"Librería Dominico",
             descripcion:"📚 Libros y Cómics para todos 💥"
         })

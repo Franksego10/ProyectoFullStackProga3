@@ -3,6 +3,33 @@ const getProductForm = document.getElementById("getProduct-form"); // El contene
 const putProductForm = document.getElementById("putProduct-form"); // El contenedor donde estara el formulario para acualizar los datos
 const urlBase = "http://localhost:3002/productos";
 
+//Realizamos una funcion para validar los datos ingresados en el formulario
+function validarFormulario(data) {
+    const errores = [];
+
+    // Nombre
+    if (!data.nombre || data.nombre.trim().length < 2) {
+        errores.push("El nombre debe tener al menos 2 caracteres");
+    }
+
+    // Precio
+    if (!data.precio || isNaN(data.precio) || Number(data.precio) < 0) {
+        errores.push("El precio debe ser un numero mayor a 0");
+    }
+    
+    // Stock
+    if (isNaN(data.stock) || Number(data.stock) < 0 || data.stock === undefined) {
+        errores.push("El stock debe ser un numero mayor a 0");
+    }
+    
+    // Categoria
+    if (!data.categoria) {
+        errores.push("Debe seleccionarse una categoria");
+    }
+
+    return errores;
+}
+
 // Escuchamos cuando hacen click en consultar producto
 getProductForm.addEventListener("submit", async event => {
     event.preventDefault(); // Evitamos el envio por defecto de HTML del form submit
@@ -143,6 +170,17 @@ async function actualizarProducto(event){
     console.log(formData);
 
     const data = Object.fromEntries(formData.entries());
+
+    // formData devuelve todos los datos como string por eso tenemos q parsear los numeros nuevamente
+    data.precio = Number(data.precio);
+    data.stock = Number(data.stock);
+    
+    const errores = validarFormulario(data);
+    if(errores.length > 0){
+        mostrarMensaje("error", errores.join("<br>"));
+        return
+    }
+
     console.log(data);
     console.log(JSON.stringify(data)); // esto le vamos a enviar al endpoint
 
