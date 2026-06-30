@@ -148,7 +148,8 @@ form input[type="submit"] {
     cursor: pointer;
 }
 
-#contenedor-productos {
+#contenedor-productos,
+#contenedor-productos-inactivos {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -266,5 +267,11 @@ form input[type="submit"] {
     background: transparent;
     position: relative;
     z-index: 1001;
+    }
+}
+
+@media(max-width: 430px) {
+    .card-producto{
+        width: 156px;
     }
 }
