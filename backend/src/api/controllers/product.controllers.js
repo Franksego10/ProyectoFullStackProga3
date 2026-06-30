@@ -31,6 +31,30 @@ export const getAllProducts = async (req, res) => {
     }
 }
 
+// GET ALL ACTIVE PRODUCTS
+export const getAllActiveProducts = async (req, res) => {
+    try {
+        // traemos lo que devuelve la connection
+        const [rows, fields] = await ProductModels.selectAllActiveProducts();
+
+        // En caso de no haber productos, error 404
+        if (rows.length === 0){
+            return res.status(404).json({
+                message: "No se encontraron productos."
+            });
+        }
+        
+        // Respuesta de exito
+        res.status(200).json({
+            payload: rows, // payload son los datos
+            total: rows.length // enviamos el total de productos
+        });
+    } catch (error) {
+        console.error("Error al consultar la base de datos:", error);
+        res.status(500).json({ message: "Error interno del servidor" });
+    }
+}
+
 ///////////////////////////
 // GET PRODUCT BY ID 
 

@@ -14,6 +14,13 @@ const selectAllProducts = () => {
     const sql = "SELECT id, nombre, descripcion, categoria, pathImagen, precio, activo, stock FROM productos";
     return connection.query(sql);
 }
+// Traemos todos los productos que tengan ACTIVO = 1
+
+const selectAllActiveProducts = () => {
+    // Ahora sí podés usar await acá adentro perfectamente
+    const sql = "SELECT id, nombre, descripcion, categoria, pathImagen, precio, activo, stock FROM productos WHERE activo = 1";
+    return connection.query(sql);
+}
 
 ///////////////////////////////
 // Traemos Producto por ID
@@ -57,6 +64,7 @@ const deleteProduct = (id) => {
 
 export default {
     selectAllProducts,
+    selectAllActiveProducts,
     selectProductById,
     insertNewProduct,
     updateProduct,
