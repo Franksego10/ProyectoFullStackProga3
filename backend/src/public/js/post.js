@@ -16,7 +16,7 @@ function validarFormulario(data) {
     }
     
     // Stock
-    if (!data.stock || isNaN(data.stock) || Number(data.stock) <= 0) {
+    if (data.stock === undefined || isNaN(data.stock) || Number(data.stock) < 0) {
         errores.push("El stock debe ser un numero mayor a 0");
     }
     

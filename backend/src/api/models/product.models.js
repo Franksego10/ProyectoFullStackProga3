@@ -35,11 +35,11 @@ const selectProductById = (id) => {
 ///////////////////////////////
 // Creamos nuevo Producto
 
-const insertNewProduct = (nombre, descripcion, categoria, imagen, precio, stock) => {
+const insertNewProduct = (nombre, descripcion, categoria, imagen, precio, stock, active) => {
     // 2. Insertamos en la base de datos usando placeholders (?) por seguridad
-    const sql = "INSERT INTO productos (nombre, descripcion, categoria, pathImagen, precio, stock) VALUES (?, ?, ?, ?, ?, ?)"
+    const sql = "INSERT INTO productos (nombre, descripcion, categoria, pathImagen, precio, stock, activo) VALUES (?, ?, ?, ?, ?, ?, ?)"
     // Devolvemos la respuesta en rows para devolver info util ccomo el id del producto
-    return connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock]);       
+    return connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock, active]);       
     
 }
 

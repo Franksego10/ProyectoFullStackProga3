@@ -89,9 +89,13 @@ export const createProduct = async (req, res) => {
     try{
         // 1. Capturamos los datos que vienen del formulario (request.body), gracias al middleware app.use(express.json()), que convierte el JSON a Objeto
         // ademas vienen limpios gracias al middleware validate Product
-        const { nombre, descripcion, categoria, imagen, precio, stock} = req.body; // destructuring
+        let { nombre, descripcion, categoria, imagen, precio, stock, active} = req.body; // destructuring
 
-        const [rows] = await ProductModels.insertNewProduct(nombre, descripcion, categoria, imagen, precio, stock);
+        if(stock == 0){
+            active = 0;
+        }
+
+        const [rows] = await ProductModels.insertNewProduct(nombre, descripcion, categoria, imagen, precio, stock, active);
         // 3. Respuesta de exito (201 Created)
         res.status(201).json({
             message: "Producto creado con exito.",
