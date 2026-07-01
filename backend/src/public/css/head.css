@@ -41,6 +41,12 @@ header ul li a {
     border: 2px solid #FFD60A;
 }
 
+header h2{
+    font-family: 'Bangers', cursive;
+    color: white;
+    letter-spacing: 2px;
+}
+
 /* Boton de MENU OCULTO */
 #btn-menu {
     display: none;

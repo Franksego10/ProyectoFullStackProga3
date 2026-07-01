@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Bienvenida </title>
+        <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon"> -->
+        <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="../backend/src/public/css/styles.css">
+        <link rel="stylesheet" href="../backend/src/public/css/head.css">
+        <link rel="icon" type="image/x-icon" href="../backend/src/public/assets/images/libreriaDominicoIcono.png">
+    </head>
+    <body>
+
+        <div class="titulo-pagina">
+            <h1> Libreria Dominico </h1>
+            <p>  Ponga su nombre para ingresar</p>
+        </div>
+
+        <main>
+            <h2>Ingrese su nombre</h2>
+            <form id="form-bienvenida">
+                <input type="text" id="bienvenida-nombre">
+                <input type="submit" id="btn-enviar" value="Ingresar">
+            </form>
+        </main>
+        <script>
+            // capturamos el formulario para escuchar los eventos
+            const formBienvenida = document.getElementById("form-bienvenida");
+            // escuchamos evento submit del formulario
+            formBienvenida.addEventListener("submit", event => {
+                // evitamos un envio por defecto a la url
+                event.preventDefault();
+
+                // capturamos el valor del input donde el cliente pone su nombre
+                let nombreCliente = document.getElementById("bienvenida-nombre").value.trim(); // le quitamos los espacios
+                // vemos si el cliente puso un nombre, creamos sessionStorage y lo redirigimos a la pagina principal
+                if(nombreCliente.length > 0){
+                    
+                    sessionStorage.setItem("cliente-nombre", nombreCliente);
+
+                    window.location.href = "index.html";
+                }
+            })
+        </script>
+    </body>
+</html>

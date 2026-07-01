@@ -47,14 +47,19 @@ function mostrarCarrito(){
         return;
     }
 
+    let totalPrecio = sumarTotalPrecioCarrito().toFixed(2);
+
     let carritoProdHTML = `
     <div class='contenedor-botones-carrito'>
         <h2 class="titulo-contenedor-productos">Productos en el carrito</h2>
         <button class='boton-vaciar' onclick='vaciarCarrito()'>Vaciar carrito</button>
+        <span>Total:<span id="contenedor-totalPrecio">$${totalPrecio}</span> </span>
         <button class='boton-comprar' onclick='realizarCompra()'>Comprar</button>
     </div>
     <ul>
     `;
+
+
 
     listaCarrito.forEach(element => {
         carritoProdHTML += `
@@ -102,6 +107,10 @@ function restarCantidadProducto(idProd){
     productoCarrito.cantidad -= 1;
     guardarCarrito();
     mostrarCarrito();
+}
+
+function sumarTotalPrecioCarrito(){
+    return listaCarrito.reduce((acc, producto) => acc += (producto.precio * producto.cantidad), 0);
 }
 
 function borrarProductoID(idProd){
