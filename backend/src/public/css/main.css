@@ -1,5 +1,5 @@
 
-#contenedor-productos, #contenedor-productos-inactivos {
+#contenedor-productos, #contenedor-productos-inactivos, .contenedor-productos {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
