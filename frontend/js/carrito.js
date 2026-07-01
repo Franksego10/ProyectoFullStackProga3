@@ -48,9 +48,10 @@ function mostrarCarrito(){
     }
 
     let carritoProdHTML = `
-    <div class='contenedor-vaciar'>
+    <div class='contenedor-botones-carrito'>
         <h2 class="titulo-contenedor-productos">Productos en el carrito</h2>
         <button class='boton-vaciar' onclick='vaciarCarrito()'>Vaciar carrito</button>
+        <button class='boton-comprar' onclick='realizarCompra()'>Comprar</button>
     </div>
     <ul>
     `;
@@ -115,5 +116,4 @@ function vaciarCarrito(){
     listaCarrito.length = 0;
     mostrarCarrito();
     guardarCarrito();
-    
 }
