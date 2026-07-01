@@ -125,5 +125,4 @@ function vaciarCarrito(){
     listaCarrito.length = 0;
     mostrarCarrito();
     guardarCarrito();
-    
 }

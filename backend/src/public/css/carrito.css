@@ -78,6 +78,16 @@
     font-size: 0.85rem;
 }
 
+.boton-comprar {
+    background-color: transparent;
+    color: #189a3b;
+    border: 1px solid #189a3b;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
 .bloque-item {
     display: flex;
     justify-content: space-between;
