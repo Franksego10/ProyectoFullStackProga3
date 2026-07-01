@@ -2,6 +2,8 @@
 //      Controladores de Autentificacion
 // ===========================================
 import AuthModels from "../models/auth.models.js"
+import bcrypt from "bcrypt"
+
 export const loginView = async (req, res) => {
     res.render("login", {
         title: "Login",
@@ -20,29 +22,77 @@ export const processLoginInfo = async(req, res) => {
 
         // evitamos una consulta innecesaria 
         if(!email || !password){
-            return res.render("login");
+            return res.render("login", {
+                title: "Login",
+                tituloAccion: "Libreria Dominico",
+                descripcion: "Introduci tus datos para poder ingresar",
+                about: "Iniciar sesión",
+                error: "Faltan campos en el formulario"
+            });
         }
 
-        // TO DO mandar error a la vista login
         
-        const [rows] = await AuthModels.selectUser(email, password);
+        const [rows] = await AuthModels.selectUser(email);
 
-        // TO DO Creamos mensaje de error si no existe el user admin
-
+        
+        // Creamos mensaje de error si no existe el user admin
+        if(rows.length === 0){
+            return res.render("login", {
+                title: "Login",
+                tituloAccion: "Libreria Dominico",
+                descripcion: "Introduci tus datos para poder ingresar",
+                about: "Iniciar sesión",
+                error: "Credenciales invalidas. Usuario no encontrado"
+            });
+        }
+        
         const user = rows[0];
         console.table(user);
-
-        // Una vez que recibimos a nuesstro usuario admin vamos a crear una sesion
-        req.session.user = {
-            id: user.id,
-            nombre: user.nombre,
-            correo: user.correo
+        
+        // validacion si el usuario esta dado de baja
+        if (!user.es_admin){
+            return res.render("login", {
+                title: "Login",
+                tituloAccion: "Libreria Dominico",
+                descripcion: "Introduci tus datos para poder ingresar",
+                about: "Iniciar sesión",
+                error: "Credenciales invalidas. Usuario ya no es admin"
+            });
         }
 
-        res.redirect("/dashboard/index");
+        // comparamos el password hasheado que se escribio en el input con el password encriptado de la base de datos
+        const match = await bcrypt.compare(password, user.contrasena);
+
+        // bcrypt 3: Si coinciden los hashes match devuelve true y continuamos con el login
+        if(match){
+
+            // Una vez que recibimos a nuesstro usuario admin vamos a crear una sesion
+            req.session.user = {
+                id: user.id,
+                nombre: user.nombre,
+                correo: user.correo
+            }
+
+            res.redirect("/dashboard/index");
+        }
+        else {
+            res.render("login", {
+                title: "Login",
+                tituloAccion: "Libreria Dominico",
+                descripcion: "Introduci tus datos para poder ingresar",
+                about: "Iniciar sesión",
+                error: "Contraseña invalida. Ingrese una correcta"
+            })
+        }
+
+        
+        
     }
     catch(error){
-
+        console.log(error);
+        res.status(500).json({
+            message: "Error interno del servidor"
+        });
     }
 }
 

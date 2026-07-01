@@ -39,9 +39,36 @@
 
         </form>
 
+        <!-- Formulario para crear usuario -->
+
+        <h2> Crear nuevo usuario </h2>
+
+        <form id="postUser-form">
+            <!-- Nombre producto -->
+            <label for="nameUser">Nombre</label>
+            <input type="text" name="nombre" id="nameUser" required>
+
+            <!-- Descripcion -->
+            <label for="emailUser">Email</label>
+            <input type="text" name="email" id="emailUser" required>
+
+            <!-- Precio -->
+            <label for="passwordUser">Contraseña</label>
+            <input type="text" name="password" id="passwordUser" required>
+
+            <select hidden name="es_admin" id="esAdmin">
+                <option value="1">Admin</option>
+            </select>
+
+            <input type="submit" value="Crear usuario">
+
+        </form>
+
         <div id="contenedor-productos">
             <!-- Aca ira nuestro mensaje de exito o error -->
         </div>
+
+
     </main>
 
     <script src="/js/header.js"></script>

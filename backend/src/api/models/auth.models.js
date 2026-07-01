@@ -35,11 +35,24 @@ const User = sequelize.define("usuarios", {
     }
 })
 
-const selectUser = async (emailUser, passwordUser) => {
-    const rows = await User.findAll({where: {correo : emailUser, contrasena : passwordUser}})
+
+
+const selectUser = async (emailUser) => {
+    const rows = await User.findAll({where: {correo : emailUser}})
     return [rows];
 }
 
+const createUser = async (nombre, email, password, es_admin) =>{
+    const usuarioCreado = await User.create({
+        correo: email,
+        contrasena: password,
+        es_admin,
+        nombre
+    });
+    return [{insertId : usuarioCreado.id}];
+}
+
 export default {
-    selectUser
+    selectUser,
+    createUser
 }
