@@ -9,6 +9,7 @@ import { loggerURL } from "./src/api/middlewares/middlewares.js";
 // importamos la configuracion para trabajar con rutas de utils
 import {__dirname, join} from "./src/api/utils/index.js";
 import session from "express-session"; // importamos session
+import { connectDatabase } from "./src/api/database/sequelize.js";
 
 // con destructuring extraemos las variables port y session_key de environment
 const {port, session_key} = environment;
@@ -136,6 +137,7 @@ app.use("/dashboard", viewRoutes);
 // RUTA DE LOGIN
 app.use("/login", authRoutes);
 
+await connectDatabase()
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);

@@ -1,7 +1,6 @@
 // ===========================================
 //      Controladores de Autentificacion
 // ===========================================
-import connection from "../database/db.js";
 import AuthModels from "../models/auth.models.js"
 export const loginView = async (req, res) => {
     res.render("login", {

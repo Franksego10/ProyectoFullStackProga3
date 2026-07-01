@@ -4,62 +4,120 @@
 ============================
 */
 
-import connection from "../database/db.js";
+//import connection from "../database/db.js";
+import sequelize from "../database/sequelize.js";
+import { DataTypes } from "sequelize";
+
+const Producto = sequelize.define("Productos", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    nombre: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        // validate:{
+        //     isAlphanumeric:false
+        // }
+    },
+    descripcion: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    pathImagen: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    categoria: {
+        type: DataTypes.ENUM(["comic", "libro"])
+    },
+    precio: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false
+    },
+    activo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    },
+    stock: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    }
+});
+
 
 ////////////////////////////////
 // Traemos todos los productos
 
-const selectAllProducts = () => {
-    // Ahora sí podés usar await acá adentro perfectamente
-    const sql = "SELECT id, nombre, descripcion, categoria, pathImagen, precio, activo, stock FROM productos";
-    return connection.query(sql);
+const selectAllProducts = async () => {
+    const rows = await Producto.findAll()
+    return [rows,null]
 }
 // Traemos todos los productos que tengan ACTIVO = 1
 
-const selectAllActiveProducts = () => {
-    // Ahora sí podés usar await acá adentro perfectamente
-    const sql = "SELECT id, nombre, descripcion, categoria, pathImagen, precio, activo, stock FROM productos WHERE activo = 1";
-    return connection.query(sql);
+const selectAllActiveProducts = async () => {
+    const rows = await Producto.findAll({ where: { activo: 1 } });
+    return [rows, null];
 }
 
 ///////////////////////////////
 // Traemos Producto por ID
 
-const selectProductById = (id) => {
-    const sql = "SELECT id, nombre, descripcion, categoria, pathImagen, precio, activo, stock FROM productos WHERE productos.id = ?";
-    // const id = request.params.id //Obtengo el valor que paso por la URL
-    // Ahora el validateId captura el valor del id limpio (el id ahora esta dentro de la request)
-    return connection.query(sql, [id]);
+const selectProductById = async (id) => {
+    const producto = await Producto.findByPk(id)
+    return [producto ? [producto] : []]
 }
 
 ///////////////////////////////
 // Creamos nuevo Producto
 
-const insertNewProduct = (nombre, descripcion, categoria, imagen, precio, stock, active) => {
-    // 2. Insertamos en la base de datos usando placeholders (?) por seguridad
-    const sql = "INSERT INTO productos (nombre, descripcion, categoria, pathImagen, precio, stock, activo) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    // Devolvemos la respuesta en rows para devolver info util ccomo el id del producto
-    return connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock, active]);       
+const insertNewProduct = async (nombre, descripcion, categoria, imagen, precio, stock, active) => {
+    const productoCreado = await Producto.create({
+        nombre,
+        descripcion,
+        categoria,
+        pathImagen: imagen,
+        precio,
+        stock,
+        activo: active
+    });
+    return [{insertId : productoCreado.id}];
     
 }
 
 ////////////////////////////////
 // Modificamos un producto
 
-const updateProduct = (nombre, descripcion, categoria, imagen, precio, stock, active, id) => {
-    // 2. Actualizamos en la base de datos usando placeholders (?) por seguridad
-    const sql = "UPDATE productos SET nombre = ?, descripcion = ?, categoria = ?, pathImagen = ?, precio = ?, stock = ?, activo = ? WHERE id = ?";
-    // Guardamos el resultado de la conexion de la BD
-    return connection.query(sql, [nombre, descripcion, categoria, imagen, precio, stock, active, id]);
+const updateProduct = async (nombre, descripcion, categoria, imagen, precio, stock, active, id) => {
+    const [affectedRows] = await Producto.update({
+        nombre,
+        descripcion,
+        categoria,
+        pathImagen: imagen,
+        precio,
+        stock,
+        activo: active},
+    {
+        where:{id}
+    })
+
+    return [{affectedRows}]
 }
 
 ////////////////////////////////
 // Eliminamos un Producto
 
-const deleteProduct = (id) => {
-    // 2. Mandamos la sentencia sql para eliminar el producto de la base de datos segun el id que se le paso
-    const sql = "DELETE FROM productos WHERE id = ?"
-    return connection.query(sql, [id]);
+const deleteProduct = async (id) => {
+    // // 2. Mandamos la sentencia sql para eliminar el producto de la base de datos segun el id que se le paso
+    // const sql = "DELETE FROM productos WHERE id = ?"
+    // return connection.query(sql, [id]);
+    const deleteProduct = await Producto.destroy({
+        where:{id}
+    })
+    console.log(deleteProduct)
 }
 
 export default {
