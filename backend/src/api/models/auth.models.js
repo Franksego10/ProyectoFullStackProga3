@@ -40,7 +40,6 @@ const selectUser = async (emailUser, passwordUser) => {
     return [rows];
 }
 
-
 export default {
     selectUser
 }

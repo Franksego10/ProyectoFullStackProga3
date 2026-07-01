@@ -39,9 +39,23 @@
     </div>
 
     <main>
-        <h2 class="titulo-contenedor-productos">Nuestros productos</h2>
+        <!-- <h2 class="titulo-contenedor-productos">Nuestros productos</h2> -->
+        <!-- <div class="contenedor-productos">
+            <span>No hay comics por el momento...</span>
+        </div>
+
         <div id="contenedor-productos">
             <p>Cargando productos...</p>
+        </div> -->
+
+        <h2 class="titulo-contenedor-productos"> Comics </h2>
+        <div class="contenedor-productos" id="seccion-comics">
+            <span>Cargando comics...</span>
+        </div>
+
+        <h2 class="titulo-contenedor-productos"> Libros </h2>
+        <div class="contenedor-productos" id="seccion-libros">
+            <span>Cargando libros...</span>
         </div>
 
         <div id="items-carrito"></div>
@@ -65,7 +79,9 @@
 
 
 
-        const contenedorProductos = document.getElementById("contenedor-productos");
+        //const contenedorProductos = document.getElementById("contenedor-productos");
+        const seccionComics = document.getElementById("seccion-comics");
+        const seccionLibros = document.getElementById("seccion-libros");
 
         const url = "http://localhost:3002/productos/activos";
 
@@ -79,10 +95,12 @@
                     const parsedResponse = await response.json()
                     throw new Error(`${parsedResponse.message}`)
                 }
-
                 const { payload } = await response.json()
-                renderizarProductos(payload)
-
+                let misComics = payload.filter((producto) => producto.categoria == "comic")
+                renderizarProductos(seccionComics, misComics)
+                
+                let misLibros = payload.filter((producto) => producto.categoria == "libro")
+                renderizarProductos(seccionLibros, misLibros)
             } catch (error) {
                 console.log(error)
                 mostrarError(error)
@@ -90,7 +108,7 @@
             
         }
 
-        function renderizarProductos(array) {
+        function renderizarProductos(contenedor, array) {
             
             let htmlProductos = "";
 
@@ -106,7 +124,7 @@
                 `;
             });
 
-            contenedorProductos.innerHTML = htmlProductos;
+            contenedor.innerHTML = htmlProductos;
 
             document.querySelectorAll(".btn-comprar").forEach(btn => {
                 btn.addEventListener("click", () => {

@@ -59,7 +59,7 @@ const selectAllProducts = async () => {
 // Traemos todos los productos que tengan ACTIVO = 1
 
 const selectAllActiveProducts = async () => {
-    const rows = await Producto.findAll({ where: { activo: 1 } });
+    const rows = await Producto.findAll({ where: { activo: 1} });
     return [rows, null];
 }
 
