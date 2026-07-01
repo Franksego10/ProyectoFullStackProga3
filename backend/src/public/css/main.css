@@ -1,5 +1,5 @@
 
-#contenedor-productos {
+#contenedor-productos, #contenedor-productos-inactivos {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -23,6 +23,11 @@
     text-align: center;
 }
 
+@media(max-width: 430px) {
+    .card-producto{
+        width: 156px;
+    }
+}
 .card-producto img {
     width: 100%;
     aspect-ratio: 2/3;   /* proporción clásica de tapa de cómic/libro */
