@@ -15,11 +15,11 @@
     min-height: 170px;
     padding: 10px;
     gap: 6px;
-    background-color: white;
-    color: #1A1F4B;
+    background-color: var(--bg-card-product);
+    color: var(--text-product);
     border-radius: 8px;
-    border: 3px solid #1A1F4B;
-    box-shadow: 4px 4px 0px #1A1F4B;
+    border: 3px solid var(--border-card);
+    box-shadow: 4px 4px 0px var(--shadow-card);
     font-size: 10px;
     text-align: center;
 }

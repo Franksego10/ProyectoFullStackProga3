@@ -12,8 +12,8 @@ ul {
 /* === GENERAL === */
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #F4F4F8;
-    color: #1A1F4B;
+    background-color: var(--bg-body);
+    color: var(--text-product);
 }
 
 /* === MAIN Y TITULOS DE SECCIÓN === */
@@ -26,8 +26,8 @@ main h2 {
     font-size: 1.8rem;
     letter-spacing: 2px;
     margin-bottom: 20px;
-    color: #1A1F4B;
-    border-bottom: 3px solid #FFD60A;
+    color: var(--color-titulo-seccion);
+    border-bottom: 3px solid var(--bg-seccion);
     padding-bottom: 8px;
 }
 
@@ -43,7 +43,7 @@ form {
 form label {
     font-weight: 600;
     font-size: 0.9rem;
-    color: #1A1F4B;
+    color: var(--text-label)
 }
 
 form input[type="text"],
@@ -56,8 +56,8 @@ form select {
     border-radius: 6px;
     font-size: 1rem;
     font-family: 'Inter', sans-serif;
-    background-color: white;
-    color: #1A1F4B;
+    background-color: var(--bg-input);
+    color: var(--text-input);
 }
 
 #formLogout {
@@ -85,8 +85,8 @@ form input[type="submit"] {
     align-items: center;
     gap: 15px;
     padding: 15px;
-    background-color: white;
-    border: 3px solid #1A1F4B;
+    background-color: var(--bg-card-product);
+    border: 3px solid var(--border-card);
     border-radius: 8px;
     box-shadow: 4px 4px 0px #1A1F4B;
     margin-top: 20px;
