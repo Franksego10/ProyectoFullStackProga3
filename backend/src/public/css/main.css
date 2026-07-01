@@ -1,0 +1,46 @@
+
+#contenedor-productos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 3rem;
+}
+
+.card-producto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 170px;       /* ← Cambiá esto para ajustar el tamaño */
+    min-height: 170px;
+    padding: 10px;
+    gap: 6px;
+    background-color: white;
+    color: #1A1F4B;
+    border-radius: 8px;
+    border: 3px solid #1A1F4B;
+    box-shadow: 4px 4px 0px #1A1F4B;
+    font-size: 10px;
+    text-align: center;
+}
+
+.card-producto img {
+    width: 100%;
+    aspect-ratio: 2/3;   /* proporción clásica de tapa de cómic/libro */
+    object-fit: cover;
+}
+
+.card-producto h4 {
+    font-family: 'Bangers', cursive;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.card-producto p {
+    margin-top: auto;
+}
+---
+.carrito svg {
+    width: 24px;
+    height: 24px;
+    border: 1px solid rebeccapurple;
+}
