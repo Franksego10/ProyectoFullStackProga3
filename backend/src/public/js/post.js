@@ -1,6 +1,9 @@
 const postProductForm = document.getElementById("postProduct-form");
 const contenedorProductos = document.getElementById("contenedor-productos")
 
+const formLoginUser = document.getElementById("postUser-form");
+
+
     //  Validamos previamente los datos en el cliente
 function validarFormulario(data) {
     const errores = [];
@@ -28,6 +31,55 @@ function validarFormulario(data) {
     return errores;
 }
 
+///////////////////////
+// Enviando usuario
+formLoginUser.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    // obtenemos la data del formulario
+    const formularioAlta = event.target;
+    const formData = new FormData(formularioAlta);
+
+    const data = Object.fromEntries(formData.entries()); // Parseamos el form a objeto para enviarlo como json posteriormente
+    console.table(data);
+
+    const jsonData = JSON.stringify(data);
+    console.log(jsonData);
+
+     try {
+        const response = await fetch("http://localhost:3002/usuarios/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: jsonData
+        });
+
+        const result = await response.json();
+
+        // Manejamos respuestas no OK del sv
+        if(!response.ok){
+            mostrarMensaje("error", result.message);
+            return;
+        }
+        
+        // mostramos mensaje de exito
+        const infoUser = `${result.message} con id ${result.userId}`;
+        mostrarMensaje("exito", infoUser)
+        console.log(infoUser);
+
+        formularioAlta.reset(); // reseteamos los inputs del formulario
+
+    } catch (error) {
+        console.error("Error al enviar los datos: ", error);
+        mostrarMensaje("error", "Error de conexion con el servidor")
+    }
+
+})
+
+
+///////////////////////
+// Enviando producto
 postProductForm.addEventListener("submit", async event => {
     event.preventDefault();
 

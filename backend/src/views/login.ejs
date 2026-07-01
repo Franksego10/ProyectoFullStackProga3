@@ -24,7 +24,7 @@
         <!-- TO DO: Introducir campos regex para validar los datos que enviamos -->
         <!-- Mail del usuario -->
         <label for="emailUser">Email</label>
-        <input type="email" name="email" id="emailUSer" required>
+        <input type="email" name="email" id="emailUser" required>
 
         <!-- Contraseña del usuario -->
         <label for="passwordUser">Contraseña</label>
@@ -33,6 +33,11 @@
         <!-- Boton loguear -->
         <input type="submit" value="Login">
     </form>
+
+    <% if(typeof error !== "undefined"){ %>
+            <p class="mensaje mensaje-error"><%= error %></p>  
+   <% } %>
+
 </main>
 
 <%- include("partials/footer.ejs") %>
