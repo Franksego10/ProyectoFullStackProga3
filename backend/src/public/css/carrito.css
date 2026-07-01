@@ -44,13 +44,23 @@
     color: #333;
 }
 
-.contenedor-vaciar {
+.contenedor-botones-carrito {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px solid #eee;
     padding-bottom: 10px;
     margin-bottom: 15px;
+}
+
+.boton-comprar {
+    background-color: transparent;
+    color: #189a3b;
+    border: 1px solid #189a3b;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
 }
 
 .titulo-contenedor-productos {
