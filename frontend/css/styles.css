@@ -14,6 +14,7 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-body);
     color: var(--text-product);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* === MAIN Y TITULOS DE SECCIÓN === */

@@ -22,6 +22,7 @@
     box-shadow: 4px 4px 0px var(--shadow-card);
     font-size: 10px;
     text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 @media(max-width: 430px) {
