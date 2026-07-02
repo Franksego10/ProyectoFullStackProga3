@@ -3,7 +3,7 @@
 import express from "express";
 import environment from "./src/api/config/environment.js"; // importamos los datos de la BD
 // import connection from "./src/api/database/db.js"; // importamos pool de conexiones // ya no lo necesitamos porque esta en product.routes.js
-import { authRoutes, productRoutes, userRoutes, viewRoutes} from "./src/api/routes/index.js";
+import { authRoutes, productRoutes, userRoutes, ventasRoutes, viewRoutes} from "./src/api/routes/index.js";
 import cors from "cors"; // da permiso a las solicitudes / peticiones
 import { loggerURL } from "./src/api/middlewares/middlewares.js";
 // importamos la configuracion para trabajar con rutas de utils
@@ -139,6 +139,9 @@ app.use("/login", authRoutes);
 
 // RUTA DE USUARIO
 app.use("/usuarios", userRoutes);
+
+// RUTA DE VENTAS
+app.use("/ventas", ventasRoutes);
 
 await connectDatabase()
 
