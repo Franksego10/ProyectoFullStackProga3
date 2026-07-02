@@ -8,7 +8,7 @@
 import sequelize from "../database/sequelize.js";
 import { DataTypes } from "sequelize";
 
-const Producto = sequelize.define("Productos", {
+export const Producto = sequelize.define("Productos", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

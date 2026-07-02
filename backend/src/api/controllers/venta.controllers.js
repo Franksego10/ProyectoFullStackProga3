@@ -20,8 +20,9 @@ export const crearVenta = async (req, res) => {
     catch(error){
         console.log(error);
         // Devolvemos un codigo 500 Internal sv error
-        res.status(500).json({
-            message: "Error interno del servidor"
+        const status = error.message.includes("stock") ? 400 : 500;
+        res.status(status).json({
+            message: error.message
         });
     }
 }

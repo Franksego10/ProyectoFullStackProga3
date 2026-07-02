@@ -7,6 +7,7 @@
 //import connection from "../database/db.js";
 import sequelize from "../database/sequelize.js";
 import { DataTypes } from "sequelize";
+import { Producto } from "./product.models.js";
 
 const Ventas = sequelize.define("Ventas", {
     id: {
@@ -49,7 +50,13 @@ const VentasProductos = sequelize.define("Ventas_productos", {
 })
 
 const insertNewVenta = async (fecha, precio_total, nombre, productos) => {
-    
+    for (const producto of productos){
+        const productoDB = await Producto.findByPk(producto.idProducto);
+        if (productoDB.stock < producto.cantidadProducto){
+            throw new Error(`No hay stock suficiente de ${productoDB.nombre}`);
+        }
+    }
+
     // insertamos datos a la tabla ventas
     const ventaCreada = await Ventas.create({
     fecha,
@@ -64,6 +71,18 @@ const insertNewVenta = async (fecha, precio_total, nombre, productos) => {
             producto_id: producto.idProducto,
             cantidad: producto.cantidadProducto
         })
+        // Descontar stock
+        const productoDB = await Producto.findByPk(producto.idProducto);
+
+        await productoDB.update({
+            stock: productoDB.stock - producto.cantidadProducto
+
+        });
+        if(productoDB.stock <= 0){
+            await productoDB.update({
+                activo: 0
+            })
+        }
     }
 
     return [{insertId : ventaCreada.id}];
