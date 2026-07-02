@@ -54,7 +54,7 @@ function mostrarCarrito(){
         <h2 class="titulo-contenedor-productos">Productos en el carrito</h2>
         <button class='boton-vaciar' onclick='vaciarCarrito()'>Vaciar carrito</button>
         <span>Total:<span id="contenedor-totalPrecio">$${totalPrecio}</span> </span>
-        <button class='boton-comprar' id="btn-comprar">Comprar</button>
+        <button class='boton-comprar' onclick="imprimirTicket()" id="btn-comprar">Comprar</button>
     </div>
     <ul>
     `;
@@ -73,8 +73,9 @@ function mostrarCarrito(){
     carritoProdHTML += "</ul>";
     contenedorCarrito.innerHTML = carritoProdHTML;
 }
-const botonHTML = document.getElementById("btn-comprar")
-botonHTML.addEventListener("click", imprimirTicket)
+// }
+// const botonHTML = document.getElementById("btn-comprar")
+// botonHTML.addEventListener("click", imprimirTicket)
 
 function imprimirTicket(){
     //1.Imprimir ticket con los datos del producto
