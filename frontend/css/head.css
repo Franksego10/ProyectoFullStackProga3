@@ -28,23 +28,6 @@ header {
     }
 }
 
-header ul {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-header ul li a {
-    font-family: 'Bangers', cursive;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    color: white;
-    text-decoration: none;
-    background-color: #E63946;
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: 2px solid var(--color-yellow);
-}
 
 #btn-tema {
     font-family: 'Bangers', cursive;
@@ -61,6 +44,7 @@ header ul li a {
     align-items: center;
     gap: 8px;
 }
+
 
 @media(max-width: 705px){
     #texto-tema {
@@ -101,42 +85,12 @@ header h2{
 }
 
 /* === RESPONSIVE HEADER === */
-@media(max-width: 1040px){
+@media(max-width: 790px){
 
     header {
         flex-wrap: nowrap;
         position: relative;
     }
 
-    header ul {
-        display: none;
-    }
 
-    header ul.mostrar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(26, 31, 75, 0.97);
-        padding: 40px 20px;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 40px;
-    }
-
-    #btn-menu {
-        display: flex;
-        font-size: 28px;
-        border: none;
-        color: white;
-        cursor: pointer;
-        flex-wrap: wrap;
-        background: transparent;
-        position: relative;
-        z-index: 1001;
-    }
 }

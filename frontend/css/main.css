@@ -44,16 +44,9 @@
 .card-producto p {
     margin-top: auto;
 }
-
-
-#btnLoginRapido{
-    font-family: 'Bangers', cursive;
-    padding: 15px 15px;
-    letter-spacing: 1px;
-    background-color: var(--color-yellow);
-    box-shadow: 4px 4px 0px var(--shadow-login-button);
-    border: 1px solid white;
-    margin-top: 1rem;
-    cursor: pointer;
-    border-radius: 8px;
+---
+.carrito svg {
+    width: 24px;
+    height: 24px;
+    border: 1px solid rebeccapurple;
 }

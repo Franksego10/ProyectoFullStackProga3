@@ -5,13 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Librería Dominico</title>
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script> <!--(CDN -> Content Delivery Network) Importo el script de conversor PDF -->
-    <link rel="shortcut icon" href="../backend/src/public/assets/images/libreriaDominicoIcono.png" type="image/x-icon">
+    <script>
+        // se fija en el local storage si el tema guardado es dark, si no existe no lo ejecuta, lo mismo si es dark
+        if (localStorage.getItem('tema') === 'dark') {
+            // el añade la clase dark-mode si es que en el local se encontro que el tema era dark
+            document.documentElement.classList.add('dark-mode');
+            
+        }
+    </script>
+    <link rel="shortcut icon" href="assets/images/libreriaDominicoIcono.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../backend/src/public/css/colores.css">
-    <link rel="stylesheet" href="../backend/src/public/css/styles.css">
-    <link rel="stylesheet" href="../backend/src/public/css/head.css">
-    <link rel="stylesheet" href="../backend/src/public/css/main.css">
-    <link rel="stylesheet" href="../backend/src/public/css/carrito.css">
+    <link rel="stylesheet" href="css/colores.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/head.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/carrito.css">
 
 </head>
 <body>
@@ -19,9 +27,10 @@
     <header>
         <div class="logo">
             <a href="index.html">
-                <img src="../backend/src/public/assets/images/libreriaDominicoIcono.png" alt="Logo Librería Dominico">
+                <img src="assets/images/libreriaDominicoIcono.png" alt="Logo Librería Dominico">
             </a>
         </div>
+        <button id="btn-tema"><span id="icono-dark">🌙</span><span id="texto-tema">MODO OSCURO</span></button>
         <div id="saludo-usuario"></div>
 
         <div class="carrito">
@@ -65,6 +74,38 @@
     <script src="js/carrito.js"></script>
 
     <script>
+        
+        const btnTema = document.getElementById("btn-tema");
+        const iconoTema = document.getElementById("icono-dark");
+        const textoTema = document.getElementById("texto-tema");
+
+        btnTema.addEventListener("click", () => {
+            // cambiamos la clase de html a modo oscuro, si ya lo tiene se lo quita
+            document.documentElement.classList.toggle("dark-mode");
+            // preguntamos si html contiene la class dark mode
+            const esDark = document.documentElement.classList.contains('dark-mode');
+            // si tiene lo guarda en "tema" el valor "dark" en el local storage, sino "light"
+            if (esDark){
+                // textContent interpreta texto plano, innerHTML contenido html
+                iconoTema.textContent = "☀️";
+                // se fija el ultimo hijo
+                textoTema.textContent = "MODO CLARO";
+            }else{
+                // textContent interpreta texto plano, innerHTML contenido html
+                iconoTema.textContent = "🌙";
+                // se fija el ultimo hijo
+                textoTema.textContent = "MODO OSCURO";
+            }
+            localStorage.setItem('tema', esDark ? 'dark' : 'light');
+
+        })
+
+        // Al cargar la página, sincroniza el botón con el tema guardado
+        if (localStorage.getItem('tema') === 'dark') {
+            iconoTema.textContent = "☀️";
+            textoTema.textContent = "MODO CLARO";
+        }
+        
         const nombreUsuario = sessionStorage.getItem("cliente-nombre");
         saludarUsuario(nombreUsuario);
         if(!nombreUsuario){
