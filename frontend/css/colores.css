@@ -1,0 +1,62 @@
+:root {
+
+    --bg-header: #1A1F4B;
+    --color-yellow: #FFD60A;
+
+    --bg-logo-azul: rgba(26, 31, 75, 1);
+
+    --bg-titulo-pag: #E63946;
+    --border-titulo-pag: #1A1F4B;
+
+    --color-subtitulo: white;
+
+    --bg-body: #F4F4F8;
+
+    --color-titulo-seccion: #1A1F4B;
+    --bg-seccion: #FFD60A;
+
+    --bg-card-product: white;
+    --text-product: #1A1F4B;
+    --border-card: #1A1F4B;
+    --shadow-card: #1A1F4B;
+
+    --shadow-login-button: #1A1F4B;
+
+    --text-label: #1A1F4B;
+
+    --bg-input: white;
+    --text-input: #1A1F4B;
+
+    --color-texto-carrito: #0a0a18;
+}
+
+html.dark-mode {
+    --bg-header: #0d0d1f;
+    --color-yellow: #ffd866;
+
+    --bg-logo-azul: #0d0d1f;
+
+    --bg-titulo-pag: #2a1320;
+    --border-titulo-pag: #0a0a18;
+
+    --color-subtitulo: #b8b8c8;
+
+    --bg-body: #121225;
+
+    --color-titulo-seccion: #f2f2f2;
+    --bg-seccion: #1a1f4b;
+
+    --bg-card-product: #1e1e3a;
+    --text-product: #beb7c9;
+    --border-card: #3a3a5c;
+    --shadow-card: #0a0a18;
+
+    --shadow-login-button: #3a3a5c;
+
+    --text-label: #beb7c9;
+
+    --bg-input: #3a3a5c;
+    --text-input: #ffffff;
+
+    --color-texto-carrito: #beb7c9;
+}
