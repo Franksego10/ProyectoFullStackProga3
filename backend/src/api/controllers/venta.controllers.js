@@ -4,22 +4,18 @@ import { __dirname, join } from "../utils/index.js"
 
 // Controladores de Ventas
 export const crearVenta = async (req, res) => {
-    try{
-        // 1. Capturamos los datos que vienen del formulario (request.body), gracias al middleware app.use(express.json()), que convierte el JSON a Objeto
-        // ademas vienen limpios gracias al middleware validate Product
-        let {fecha, precio_total, nombre, productos} = req.body; // destructuring
+    try {
+        let { fecha, precio_total, nombre, productos } = req.body;
 
-        const [rows] = await VentaModels.insertNewVenta(fecha, precio_total, nombre, productos);
+        const nuevaVenta = await VentaModels.insertNewVenta(fecha, precio_total, nombre, productos); //
 
-        // 3. Respuesta de exito (201 Created)
         res.status(201).json({
-            message: "Producto creado con exito.",
-            ventaID: rows.insertId
+            message: "Venta creada con éxito.",
+            ventaID: nuevaVenta.insertId 
         });
     }
-    catch(error){
+    catch(error) {
         console.log(error);
-        // Devolvemos un codigo 500 Internal sv error
         const status = error.message.includes("stock") ? 400 : 500;
         res.status(status).json({
             message: error.message

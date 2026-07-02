@@ -79,68 +79,72 @@ function mostrarCarrito(){
 // const botonHTML = document.getElementById("btn-comprar")
 // botonHTML.addEventListener("click", imprimirTicket)
 
-function imprimirTicket(){
-    //1.Imprimir ticket con los datos del producto
-        // Gracias al CDN ya podemos usar todas las funcionalidades de JsPDF 
-        // Para registrar las ventas despues, guardaremos los ID's de los productos del carrito
+async function imprimirTicket() {
     let productosVenta = [];
-
-    // Gracias a CND, extraemos la clase de JsPDF del objeto global window
-    const {jsPDF} = window.jspdf;
-    // Creamos una nueva instancia del document usando la clase JsPDF
-    const doc = new jsPDF(); //En DOC inicializamos todos los metodos para crear PDFs
-
-    // Definimos el margen superior en el eje Y -> eje vertical, el eje X -> eje horizontal
-    let y = 40;
     
-    // Establecemos el tamaño de 32 pixeles para el primer texto:
-    doc.setFontSize(32)
-    doc.text("Libreria dominico - Ticket de compra", 15, y) // Escribimos el ticket de compra en la posicion x=80 | y=40
+    for (const producto of listaCarrito) {
+        const stockDisponible = producto.stock;
+        const cantidadPedida = producto.cantidad;
 
-    // Definimos el espacio despues del titulo
-    y += 25;
-    
-    //Definimos el tamaño de fuente para los productos del ticket
-    doc.setFontSize(16);
+        if (stockDisponible < cantidadPedida) {
+            if (stockDisponible === 0) {
+                // Evitamos comprar si no hay stock
+                alert(`"${producto.nombre}" no tiene stock disponible y fue removido de tu compra.`);
+                borrarProductoID(producto.id);
+                mostrarCarrito();
+                guardarCarrito();
+                return;
+            }
 
-    // iteramos el carrito e imprimimos nombre y precio
-    listaCarrito.forEach((producto) => {
+            // Stock insuficiente pero algo hay, 
+            const confirmado = confirm(
+                `Solo quedan ${stockDisponible} unidades de "${producto.nombre}".\n¿Desea comprar todo el stock habil?`
+            );
+
+            if (confirmado) {
+                producto.cantidad = stockDisponible; // reemplazamos la cantidad
+                guardarCarrito();
+                mostrarCarrito();
+            } else {
+                return; // el usuario canceló, no hacemos nada
+            }
+        }
+
         productosVenta.push({
             idProducto: producto.id,
             cantidadProducto: producto.cantidad
-        }) //Llenamos el array de objetos productosVenta para registrar la venta despues
+        });
+    }
 
-        doc.text(`${producto.cantidad}Uds: ${producto.nombre} / $${producto.precio} c/u`, 60, y); //20uds: carbon / $20.000 c/u 
-        y += 20;
-    })//Creamos el texto por cada producto en la listaCarrito
-
-    // Calculamos el precio total del ticket
+    // Recalculamos el precio total por si cambiaron cantidades
     const precioTotal = sumarTotalPrecioCarrito().toFixed(2);
+    const nombreUsuario = sessionStorage.getItem("cliente-nombre");
+
+    // Generamos el PDF
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    let y = 40;
+
+    doc.setFontSize(32);
+    doc.text("Libreria dominico - Ticket de compra", 15, y);
+    y += 25;
+    doc.setFontSize(16);
+
+    listaCarrito.forEach((producto) => {
+        doc.text(`${producto.cantidad}Uds: ${producto.nombre} / $${producto.precio} c/u`, 60, y);
+        y += 20;
+    });
 
     y += 10;
-
-    // Establecemos el tamaño mas grande para el precio
-    doc.setFontSize(24)
-
-    // Escribimos el precio total
+    doc.setFontSize(24);
     doc.text(`Total: ${precioTotal}`, 40, y);
-    
-    // Creamos el formato de nombre del ticket -> pedido - nombre - fecha
-    const nombreUsuario = sessionStorage.getItem("cliente-nombre");
-    
+
     let fecha = new Date();
-    let nombreTicket = `Pedido de '${nombreUsuario}' - ${fecha.toISOString()}.pdf`
-    
-    // Imprimimos el ticket de venta
-    doc.save(nombreTicket)
+    let nombreTicket = `Pedido de '${nombreUsuario}' - ${fecha.toISOString()}.pdf`;
+    doc.save(nombreTicket);
 
-    // Registrar venta 
-    registrarVenta(precioTotal, productosVenta, nombreUsuario)
-
-    //2.Realizar el post al endpoint de ventas
-
-
-    //3.Limpiar la variable de sesion con el nombre del cliente y dedirigir al index
+    // Registramos la venta
+    registrarVenta(precioTotal, productosVenta, nombreUsuario);
 }
 
 async function registrarVenta(precioTotal, productosVenta, nombreUsuario) {
