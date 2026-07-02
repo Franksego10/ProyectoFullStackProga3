@@ -88,7 +88,7 @@ async function imprimirTicket() {
 
         if (stockDisponible < cantidadPedida) {
             if (stockDisponible === 0) {
-                // Evitamos comprar si no hay stock
+                // Evitamos comprar si por algun error en la base de datos no hay stock y el producto sigue activo
                 alert(`"${producto.nombre}" no tiene stock disponible y fue removido de tu compra.`);
                 borrarProductoID(producto.id);
                 mostrarCarrito();
@@ -121,31 +121,40 @@ async function imprimirTicket() {
     const nombreUsuario = sessionStorage.getItem("cliente-nombre");
 
     // Generamos el PDF
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    let y = 40;
-
-    doc.setFontSize(32);
-    doc.text("Libreria dominico - Ticket de compra", 15, y);
-    y += 25;
-    doc.setFontSize(16);
-
-    listaCarrito.forEach((producto) => {
-        doc.text(`${producto.cantidad}Uds: ${producto.nombre} / $${producto.precio} c/u`, 60, y);
-        y += 20;
-    });
-
-    y += 10;
-    doc.setFontSize(24);
-    doc.text(`Total: ${precioTotal}`, 40, y);
-
-    let fecha = new Date();
-    let nombreTicket = `Pedido de '${nombreUsuario}' - ${fecha.toISOString()}.pdf`;
-    doc.save(nombreTicket);
+    generarPDF(precioTotal, nombreUsuario);
 
     // Registramos la venta
     registrarVenta(precioTotal, productosVenta, nombreUsuario);
 }
+
+function generarPDF(precioTotal, nombreUsuario){
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    let y = 40;
+
+    doc.setFontSize(32);
+    doc.text("Libreria dominico - Ticket de compra", 15, y);
+
+    y += 25;
+
+    doc.setFontSize(16);
+
+    listaCarrito.forEach((p) => {
+        doc.text(`${p.cantidad} Uds - ${p.nombre} - ${p.precio} c/u`, 60, y);
+        y += 20;
+    });
+
+    y += 10;
+
+    doc.setFontSize(24);
+    doc.text(`Total: ${precioTotal}`, 40, y);
+
+    let fecha = new Date();
+    doc.save(`ticket-${nombreUsuario}-${fecha.toISOString()}.pdf`);
+}
+
 
 async function registrarVenta(precioTotal, productosVenta, nombreUsuario) {
     // toLocalString vs toISOString

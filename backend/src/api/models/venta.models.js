@@ -60,17 +60,21 @@ const insertNewVenta = async (fecha, precio_total, nombre, productos) => {
                 throw new Error(`Stock insuficiente de "${productoDB.nombre}". Disponible: ${productoDB.stock}`);
             }
         }
-
+        // insertamos los datos en la tabla venta
         const ventaCreada = await Ventas.create({
-            fecha, precio_total, nombre_usuario: nombre
+            fecha,
+            precio_total,
+            nombre_usuario: nombre
         }, { transaction: t });
 
+        // trasforma el array en otro para posteriormente guardar este en la tabla venta productos
         const detalles = productos.map(p => ({
             venta_id: ventaCreada.id,
             producto_id: p.idProducto,
             cantidad: p.cantidadProducto
         }));
 
+        // insertamos todo de una en la tabla venta_productos en vez de hacer un for e insertarlos 1x1
         await VentasProductos.bulkCreate(detalles, { transaction: t });
 
         // Descontar stock en un solo loop
@@ -84,10 +88,12 @@ const insertNewVenta = async (fecha, precio_total, nombre, productos) => {
             }, { transaction: t });
         }
 
+        // si todo salio bien esto guarda definitivamente los cambios
         await t.commit();
         return { insertId: ventaCreada.id };
 
     } catch (error) {
+        // si algo sale mal esto elimina todos los cambios que se hicieron durante la transaccion
         await t.rollback();
         throw error;
     }
