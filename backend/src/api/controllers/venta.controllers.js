@@ -9,7 +9,7 @@ export const crearVenta = async (req, res) => {
         // ademas vienen limpios gracias al middleware validate Product
         let {fecha, precio_total, nombre, productos} = req.body; // destructuring
 
-        const [rows] = await VentaModels.insertNewVenta(fecha, precio_total, nombre);
+        const [rows] = await VentaModels.insertNewVenta(fecha, precio_total, nombre, productos);
 
         // 3. Respuesta de exito (201 Created)
         res.status(201).json({

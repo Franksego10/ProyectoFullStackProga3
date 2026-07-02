@@ -81,7 +81,7 @@ function imprimirTicket(){
     //1.Imprimir ticket con los datos del producto
         // Gracias al CDN ya podemos usar todas las funcionalidades de JsPDF 
         // Para registrar las ventas despues, guardaremos los ID's de los productos del carrito
-    let idProductos = [];
+    let productosVenta = [];
 
     // Gracias a CND, extraemos la clase de JsPDF del objeto global window
     const {jsPDF} = window.jspdf;
@@ -103,7 +103,11 @@ function imprimirTicket(){
 
     // iteramos el carrito e imprimimos nombre y precio
     listaCarrito.forEach((producto) => {
-        idProductos.push(producto.id) //Llenamos el array de IdProductos para registrar la venta despues
+        productosVenta.push({
+            idProducto: producto.id,
+            cantidadProducto: producto.cantidad
+        }) //Llenamos el array de objetos productosVenta para registrar la venta despues
+
         doc.text(`${producto.cantidad}Uds: ${producto.nombre} / $${producto.precio} c/u`, 60, y); //20uds: carbon / $20.000 c/u 
         y += 20;
     })//Creamos el texto por cada producto en la listaCarrito
@@ -129,7 +133,7 @@ function imprimirTicket(){
     doc.save(nombreTicket)
 
     // Registrar venta 
-    registrarVenta(precioTotal, idProductos, nombreUsuario)
+    registrarVenta(precioTotal, productosVenta, nombreUsuario)
 
     //2.Realizar el post al endpoint de ventas
 
@@ -137,7 +141,7 @@ function imprimirTicket(){
     //3.Limpiar la variable de sesion con el nombre del cliente y dedirigir al index
 }
 
-async function registrarVenta(precioTotal, idProductos, nombreUsuario) {
+async function registrarVenta(precioTotal, productosVenta, nombreUsuario) {
     // toLocalString vs toISOString
 
     // Los metodos local e ISO tienen diferentes propositos a la hora de convertir un objeto Date a una cadena
@@ -160,7 +164,7 @@ async function registrarVenta(precioTotal, idProductos, nombreUsuario) {
         fecha: fecha,
         precio_total: precioTotal,
         nombre: nombreUsuario,
-        productos: idProductos
+        productos: productosVenta
     }
 
     
