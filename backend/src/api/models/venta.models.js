@@ -53,7 +53,7 @@ const insertNewVenta = async (fecha, precio_total, nombre, productos) => {
     const t = await sequelize.transaction();
 
     try {
-        // Validacion de stock (segunda linea de defensa)
+        // Validamos el stock
         for (const producto of productos) {
             const productoDB = await Producto.findByPk(producto.idProducto, { transaction: t });
             if (productoDB.stock < producto.cantidadProducto) {
