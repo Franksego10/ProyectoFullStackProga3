@@ -71,6 +71,10 @@ function mostrarCarrito(){
         carritoProdHTML += `
             <li class="bloque-item">
                 <p class="nombre-item">${element.nombre} - $${element.precio}</p>
+                <div class="modificar-cantidad">
+                <button class="boton-sumar" onclick="sumarCantidadProducto(${element.id})" id="${element.id}">+</button>
+                <span class="texto-carrito">${element.cantidad}</span>
+                <button class="boton-restar" onclick="restarCantidadProducto(${element.id})" id="${element.id}">-</button>
                 <button class='boton-eliminar' onclick='borrarProductoID(${element.id})'>
                     <span class="icono-eliminar-prod">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -78,10 +82,6 @@ function mostrarCarrito(){
                         </svg>
                     </span>
                 </button>
-                <div class="modificar-cantidad">
-                    <button class="boton-sumar" onclick="sumarCantidadProducto(${element.id})" id="${element.id}">+</button>
-                    <span class="texto-carrito">${element.cantidad}</span>
-                    <button class="boton-restar" onclick="restarCantidadProducto(${element.id})" id="${element.id}">-</button>
                 </div>
             </li>
         `;
@@ -253,7 +253,6 @@ function sumarTotalPrecioCarrito(){
 }
 
 function borrarProductoID(idProd){
-    alert("se elimino el producto");
     const productoCarrito = existeProductoCarrito(idProd);
     if(productoCarrito){
         const indice = listaCarrito.findIndex((element) => element.id === idProd);
