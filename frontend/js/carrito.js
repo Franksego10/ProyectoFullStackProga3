@@ -172,10 +172,9 @@ async function registrarVenta(precioTotal, idProductos, nombreUsuario) {
     
     const result = await response.json();
 
-    alert(response.ok)
 
     if(response.ok){
-
+        alert(result.message);
         // Limpieza de variables en sesion y redirreccion para resetear la APP
         sessionStorage.removeItem("carrito");
         sessionStorage.removeItem("cliente-nombre");
