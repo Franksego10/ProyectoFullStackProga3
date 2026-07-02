@@ -20,6 +20,8 @@
     --border-card: #1A1F4B;
     --shadow-card: #1A1F4B;
 
+    --shadow-login-button: #1A1F4B;
+
     --text-label: #1A1F4B;
 
     --bg-input: white;
@@ -46,6 +48,8 @@ html.dark-mode {
     --text-product: #beb7c9;
     --border-card: #3a3a5c;
     --shadow-card: #0a0a18;
+
+    --shadow-login-button: #3a3a5c;
 
     --text-label: #beb7c9;
 
