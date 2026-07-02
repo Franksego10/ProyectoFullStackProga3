@@ -127,7 +127,7 @@
 
             contenedor.innerHTML = htmlProductos;
 
-            document.querySelectorAll(".btn-comprar").forEach(btn => {
+            contenedor.querySelectorAll(".btn-comprar").forEach(btn => {
                 btn.addEventListener("click", () => {
                     const producto = JSON.parse(btn.dataset.producto);
                     agregarProductoCarrito(producto);

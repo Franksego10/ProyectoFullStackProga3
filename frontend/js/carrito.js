@@ -15,7 +15,9 @@ function cargarCarrito(){
 }
 
 function agregarProductoCarrito (producto){
-    console.log("Apretamos el boton")
+    console.trace("--------------------"); 
+    console.trace("agregarProductoCarrito llamada"); 
+    console.trace("--------------------"); 
     const existeProducto = existeProductoCarrito(producto.id)
 
     if (existeProducto){
