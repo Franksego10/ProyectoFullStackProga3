@@ -50,42 +50,47 @@ const VentasProductos = sequelize.define("Ventas_productos", {
 })
 
 const insertNewVenta = async (fecha, precio_total, nombre, productos) => {
-    for (const producto of productos){
-        const productoDB = await Producto.findByPk(producto.idProducto);
-        if (productoDB.stock < producto.cantidadProducto){
-            throw new Error(`No hay stock suficiente de ${productoDB.nombre}`);
+    const t = await sequelize.transaction();
+
+    try {
+        // Validamos el stock
+        for (const producto of productos) {
+            const productoDB = await Producto.findByPk(producto.idProducto, { transaction: t });
+            if (productoDB.stock < producto.cantidadProducto) {
+                throw new Error(`Stock insuficiente de "${productoDB.nombre}". Disponible: ${productoDB.stock}`);
+            }
         }
-    }
 
-    // insertamos datos a la tabla ventas
-    const ventaCreada = await Ventas.create({
-    fecha,
-    precio_total,
-    nombre_usuario:nombre
-    });
+        const ventaCreada = await Ventas.create({
+            fecha, precio_total, nombre_usuario: nombre
+        }, { transaction: t });
 
-    // insertamos datos a la tabla venta_producto
-    for (const producto of productos){
-        await VentasProductos.create({
+        const detalles = productos.map(p => ({
             venta_id: ventaCreada.id,
-            producto_id: producto.idProducto,
-            cantidad: producto.cantidadProducto
-        })
-        // Descontar stock
-        const productoDB = await Producto.findByPk(producto.idProducto);
+            producto_id: p.idProducto,
+            cantidad: p.cantidadProducto
+        }));
 
-        await productoDB.update({
-            stock: productoDB.stock - producto.cantidadProducto
+        await VentasProductos.bulkCreate(detalles, { transaction: t });
 
-        });
-        if(productoDB.stock <= 0){
+        // Descontar stock en un solo loop
+        for (const producto of productos) {
+            const productoDB = await Producto.findByPk(producto.idProducto, { transaction: t });
+            const nuevoStock = productoDB.stock - producto.cantidadProducto;
+
             await productoDB.update({
-                activo: 0
-            })
+                stock: nuevoStock,
+                activo: nuevoStock <= 0 ? 0 : productoDB.activo
+            }, { transaction: t });
         }
-    }
 
-    return [{insertId : ventaCreada.id}];
+        await t.commit();
+        return { insertId: ventaCreada.id };
+
+    } catch (error) {
+        await t.rollback();
+        throw error;
+    }
 }
 
 export default {
